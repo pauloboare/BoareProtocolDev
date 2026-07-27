@@ -1,0 +1,421 @@
+#!/bin/sh
+# Instalador do Boare Protocol Dev.
+#
+# Cria adaptadores locais para ferramentas de desenvolvimento com IA.
+# Referência padrão: v1, canal estável. Use --ref main só se quiser a versão de
+# desenvolvimento.
+#
+# Exemplos:
+#   Auto no projeto:                  sh instalar.sh --projeto --ferramenta auto
+#   Todas no projeto:                 sh instalar.sh --projeto --ferramenta todas
+#   VS Code no projeto:               sh instalar.sh --projeto --ferramenta vscode
+#   Claude Code global:               sh instalar.sh --ferramenta claude
+#   Cursor no projeto:                sh instalar.sh --projeto --ferramenta cursor
+#   OpenCode no projeto:              sh instalar.sh --projeto --ferramenta opencode
+#   Kimi no projeto:                  sh instalar.sh --projeto --ferramenta kimi
+#   Antigravity no projeto:           sh instalar.sh --projeto --ferramenta antigravity
+#   Codex no projeto:                 sh instalar.sh --projeto --ferramenta codex
+
+set -e
+
+PROJETO=0
+FERRAMENTA="auto"
+REFERENCIA="v1"
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --projeto)
+            PROJETO=1
+            ;;
+        --ferramenta)
+            shift
+            FERRAMENTA="$1"
+            ;;
+        --ref|--referencia)
+            shift
+            REFERENCIA="$1"
+            ;;
+        --vscode|--claude|--cursor|--opencode|--antigravity|--kimi|--codex|--todas|--assistida|--auto)
+            FERRAMENTA="${1#--}"
+            ;;
+        *)
+            echo "Opção desconhecida: $1" >&2
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+PROTOCOL_URL="https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$REFERENCIA/CONDUZIR.md"
+
+write_commands_frontmatter() {
+    COMMANDS_DESTINO="$1"
+    mkdir -p "$COMMANDS_DESTINO"
+
+    [ -f "$COMMANDS_DESTINO/protocolo.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo.md" <<FIM
+---
+description: Continua o Boare Protocol Dev pelo estado atual do projeto
+---
+
+Leia $PROTOCOL_URL e conduza o passo atual pelo estado dos arquivos do projeto.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-iniciar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-iniciar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-iniciar.md" <<FIM
+---
+description: Inicia um projeto novo pelo Passo 1 do Boare Protocol Dev
+---
+
+Leia $PROTOCOL_URL e conduza o Passo 1.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-continuar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-continuar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-continuar.md" <<FIM
+---
+description: Retoma um projeto que já usa o Boare Protocol Dev
+---
+
+Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Se esse arquivo não existir, leia $PROTOCOL_URL e descubra o passo atual pelo que existe em docs/.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-adotar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-adotar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-adotar.md" <<FIM
+---
+description: Adota o Boare Protocol Dev em um sistema existente
+---
+
+Leia $PROTOCOL_URL e conduza o Passo 2b.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-status.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-status.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-status.md" <<FIM
+---
+description: Diagnostica o estado do Boare Protocol Dev sem alterar arquivos
+---
+
+Leia $PROTOCOL_URL e diagnostique o estado atual do protocolo neste projeto. Não edite arquivos, não execute ações destrutivas e não avance passos. Entregue apenas: passo atual provável, evidências encontradas, lacunas, riscos e próximo comando recomendado.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-retomada.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-retomada.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-retomada.md" <<FIM
+---
+description: Prepara a retomada do Boare Protocol Dev para a próxima sessão
+---
+
+Leia $PROTOCOL_URL e atualize docs/CONTINUAR.md com o estado real deste projeto. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida.
+FIM
+}
+
+write_commands_plain() {
+    COMMANDS_DESTINO="$1"
+    mkdir -p "$COMMANDS_DESTINO"
+
+    [ -f "$COMMANDS_DESTINO/protocolo.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo.md" <<FIM
+# Continua o Boare Protocol Dev pelo estado atual do projeto
+
+Leia $PROTOCOL_URL e conduza o passo atual pelo estado dos arquivos do projeto.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-iniciar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-iniciar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-iniciar.md" <<FIM
+# Inicia um projeto novo pelo Passo 1 do Boare Protocol Dev
+
+Leia $PROTOCOL_URL e conduza o Passo 1.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-continuar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-continuar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-continuar.md" <<FIM
+# Retoma um projeto que já usa o Boare Protocol Dev
+
+Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Se esse arquivo não existir, leia $PROTOCOL_URL e descubra o passo atual pelo que existe em docs/.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-adotar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-adotar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-adotar.md" <<FIM
+# Adota o Boare Protocol Dev em um sistema existente
+
+Leia $PROTOCOL_URL e conduza o Passo 2b.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-status.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-status.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-status.md" <<FIM
+# Diagnostica o estado do Boare Protocol Dev sem alterar arquivos
+
+Leia $PROTOCOL_URL e diagnostique o estado atual do protocolo neste projeto. Não edite arquivos, não execute ações destrutivas e não avance passos. Entregue apenas: passo atual provável, evidências encontradas, lacunas, riscos e próximo comando recomendado.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-retomada.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-retomada.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-retomada.md" <<FIM
+# Prepara a retomada do Boare Protocol Dev para a próxima sessão
+
+Leia $PROTOCOL_URL e atualize docs/CONTINUAR.md com o estado real deste projeto. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida.
+FIM
+}
+
+write_skill() {
+    SKILL_DESTINO="$1"
+    mkdir -p "$SKILL_DESTINO"
+    [ -f "$SKILL_DESTINO/SKILL.md" ] && echo "Aviso: sobrescrevendo skill existente: $SKILL_DESTINO/SKILL.md" >&2
+    cat > "$SKILL_DESTINO/SKILL.md" <<FIM
+---
+name: protocolo
+description: Conduz projetos com o Boare Protocol Dev, mantendo decisões, contexto, testes e retomada no repositório.
+---
+
+# Boare Protocol Dev
+
+Quando esta skill for usada, siga estas regras:
+
+- Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.
+- Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.
+- Leia $PROTOCOL_URL.
+- Descubra o passo atual pelo que existe em \`docs/\`.
+- Faça uma pergunta por vez.
+- Edite arquivos somente dentro do projeto quando a ferramenta permitir.
+- Não publique, instale dependências, apague arquivos, use credenciais ou altere histórico sem confirmação explícita.
+- No fim, verifique o portão de saída e pare.
+FIM
+}
+
+write_continuar() {
+    if [ "$PROJETO" -ne 1 ]; then
+        return
+    fi
+    mkdir -p docs
+    if [ -f docs/CONTINUAR.md ]; then
+        return
+    fi
+    cat > docs/CONTINUAR.md <<FIM
+# Continuar o protocolo
+
+Leia $PROTOCOL_URL e continue pelo estado atual deste projeto.
+
+## Modo
+
+<normal / refatoração>
+
+## Estado atual
+
+- Último passo concluído: <passo ou "nenhum">
+- Passo atual: <passo provável>
+- Última ação feita: <ação objetiva>
+- Próxima ação recomendada: <ação objetiva>
+- Próximo comando recomendado: </protocolo / /protocolo-iniciar / /protocolo-continuar / /protocolo-adotar / /protocolo-status / /protocolo-retomada>
+
+## Como descobrir o passo atual
+
+1. Leia os arquivos existentes em \`docs/\`.
+2. Compare com os artefatos esperados pelo protocolo.
+3. Busque apenas o arquivo do passo atual.
+4. Faça uma pergunta por vez.
+5. No fim do passo, confira o portão de saída.
+6. Não avance para o próximo passo sem pedido explícito.
+
+## Artefatos conhecidos
+
+- \`docs/BUGS.md\`: <existe / não existe>
+- \`docs/PRD.md\`: <existe / não existe>
+- \`docs/DECISOES_TECNICAS.md\`: <existe / não existe>
+- \`docs/DESIGN.md\`: <existe / não se aplica / não existe>
+- \`docs/FSD.md\`: <existe / não existe>
+
+## Antes de continuar, leia
+
+- <arquivo obrigatório para entender o estado atual>
+
+## Perguntas abertas
+
+- <pergunta que ainda precisa de resposta>
+
+## Decisões recentes
+
+- <decisão tomada, motivo e arquivo onde foi registrada>
+
+## Riscos ativos
+
+- <risco, impacto e próxima verificação>
+
+## Última validação conhecida
+
+- Comando: <comando executado>
+- Resultado: <passou / falhou / não executado>
+- Observação: <informação relevante>
+
+## Observações finais para a próxima sessão
+
+- <restrição importante>
+- <decisão pendente>
+FIM
+}
+
+add_codex_agents_guidance() {
+    if [ "$PROJETO" -ne 1 ]; then
+        return
+    fi
+    if [ -f AGENTS.md ] && grep -q "Boare Protocol Dev" AGENTS.md; then
+        return
+    fi
+    {
+        echo ""
+        echo "## Boare Protocol Dev"
+        echo ""
+        echo "Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo."
+        echo "Para tarefas comuns sem pedido de protocolo, não aplique este fluxo."
+        echo "Para conduzir o protocolo neste projeto, leia $PROTOCOL_URL e siga o passo atual pelo estado de docs/."
+        echo "Use docs/CONTINUAR.md como fonte de retomada entre sessões."
+    } >> AGENTS.md
+}
+
+add_vscode_copilot_instructions() {
+    if [ "$PROJETO" -ne 1 ]; then
+        echo "VS Code usa instruções por projeto. Rode com --projeto --ferramenta vscode." >&2
+        exit 1
+    fi
+    mkdir -p .github
+    if [ -f .github/copilot-instructions.md ] && grep -q "Boare Protocol Dev" .github/copilot-instructions.md; then
+        return
+    fi
+    {
+        echo ""
+        echo "## Boare Protocol Dev"
+        echo ""
+        echo "Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo."
+        echo "Para tarefas comuns sem pedido de protocolo, não aplique este fluxo."
+        echo "Para conduzir o protocolo neste projeto, leia $PROTOCOL_URL e siga o passo atual pelo estado de docs/."
+        echo "Use docs/CONTINUAR.md como fonte de retomada entre sessões."
+        echo "Não avance mais de um passo sem pedido explícito."
+    } >> .github/copilot-instructions.md
+}
+
+
+write_assisted_install() {
+    if [ "$PROJETO" -ne 1 ]; then
+        echo "Instalação assistida precisa de --projeto para criar docs/INSTALAR_PROTOCOLO.md." >&2
+        exit 1
+    fi
+    mkdir -p docs
+    [ -f docs/INSTALAR_PROTOCOLO.md ] && echo "Aviso: sobrescrevendo instrução assistida existente: docs/INSTALAR_PROTOCOLO.md" >&2
+    cat > docs/INSTALAR_PROTOCOLO.md <<FIM
+# Instalar o Boare Protocol Dev nesta ferramenta
+
+Esta ferramenta não foi detectada pelo instalador automático ou usa um formato próprio.
+
+Peça para a IA da ferramenta executar esta tarefa:
+
+\`\`\`text
+Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia $PROTOCOL_URL e conduza o passo atual pelo estado dos arquivos do projeto. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev.
+\`\`\`
+
+Depois, registre em docs/CONTINUAR.md qual caminho foi usado.
+FIM
+}
+
+install_tool() {
+    TOOL="$1"
+    case "$TOOL" in
+        vscode)
+            add_vscode_copilot_instructions
+            DESTINO=".github/copilot-instructions.md"
+            ;;
+        claude)
+            if [ "$PROJETO" -eq 1 ]; then DESTINO=".claude/commands"; else DESTINO="$HOME/.claude/commands"; fi
+            write_commands_frontmatter "$DESTINO"
+            ;;
+        cursor)
+            if [ "$PROJETO" -ne 1 ]; then echo "Cursor usa comandos por projeto. Rode com --projeto --ferramenta cursor." >&2; exit 1; fi
+            DESTINO=".cursor/commands"
+            write_commands_plain "$DESTINO"
+            ;;
+        opencode)
+            if [ "$PROJETO" -eq 1 ]; then DESTINO=".opencode/commands"; else DESTINO="$HOME/.config/opencode/commands"; fi
+            write_commands_frontmatter "$DESTINO"
+            ;;
+        kimi)
+            if [ "$PROJETO" -eq 1 ]; then DESTINO=".agents/skills/protocolo"; else DESTINO="$HOME/.agents/skills/protocolo"; fi
+            write_skill "$DESTINO"
+            ;;
+        antigravity)
+            if [ "$PROJETO" -eq 1 ]; then DESTINO=".agents/plugins/boare-protocol-dev"; else DESTINO="$HOME/.gemini/config/plugins/boare-protocol-dev"; fi
+            mkdir -p "$DESTINO/rules"
+            [ -f "$DESTINO/plugin.json" ] && echo "Aviso: sobrescrevendo plugin existente: $DESTINO/plugin.json" >&2
+            cat > "$DESTINO/plugin.json" <<FIM
+{
+  "name": "boare-protocol-dev",
+  "version": "1.0.0",
+  "description": "Conduz projetos com o Boare Protocol Dev por regras e skills de agente."
+}
+FIM
+            write_skill "$DESTINO/skills/protocolo"
+            [ -f "$DESTINO/rules/protocolo.md" ] && echo "Aviso: sobrescrevendo regra existente: $DESTINO/rules/protocolo.md" >&2
+            cat > "$DESTINO/rules/protocolo.md" <<FIM
+# Boare Protocol Dev
+
+Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.
+Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.
+Quando o usuário pedir para usar o protocolo, leia $PROTOCOL_URL e conduza o passo atual.
+Use docs/CONTINUAR.md para retomada e não avance mais de um passo sem pedido explícito.
+FIM
+            ;;
+        codex)
+            add_codex_agents_guidance
+            if [ "$PROJETO" -eq 1 ]; then DESTINO=".codex/skills/protocolo"; else DESTINO="$HOME/.codex/skills/protocolo"; fi
+            write_skill "$DESTINO"
+            ;;
+        assistida)
+            write_assisted_install
+            DESTINO="docs/INSTALAR_PROTOCOLO.md"
+            ;;
+        *)
+            echo "Ferramenta não suportada: $TOOL" >&2
+            exit 1
+            ;;
+    esac
+    echo "- $TOOL: $DESTINO"
+}
+
+resolve_auto_tools() {
+    if [ "$PROJETO" -eq 1 ]; then
+        FOUND=""
+        [ -d .claude ] && FOUND="$FOUND claude"
+        [ -d .vscode ] || [ -f .github/copilot-instructions.md ] && FOUND="$FOUND vscode"
+        [ -d .cursor ] && FOUND="$FOUND cursor"
+        [ -d .opencode ] && FOUND="$FOUND opencode"
+        [ -d .agents ] && FOUND="$FOUND antigravity kimi"
+        [ -d .codex ] || [ -f AGENTS.md ] && FOUND="$FOUND codex"
+        if [ -z "$FOUND" ]; then echo "assistida"; else echo "$FOUND"; fi
+    else
+        FOUND=""
+        command -v claude >/dev/null 2>&1 && FOUND="$FOUND claude"
+        command -v opencode >/dev/null 2>&1 && FOUND="$FOUND opencode"
+        command -v kimi >/dev/null 2>&1 && FOUND="$FOUND kimi"
+        command -v codex >/dev/null 2>&1 && FOUND="$FOUND codex"
+        if [ -z "$FOUND" ]; then echo "claude"; else echo "$FOUND"; fi
+    fi
+}
+
+write_continuar
+
+case "$FERRAMENTA" in
+    auto)
+        TOOLS="$(resolve_auto_tools)"
+        ;;
+    todas)
+        if [ "$PROJETO" -ne 1 ]; then echo "Use --projeto --ferramenta todas para evitar escrita global excessiva." >&2; exit 1; fi
+        TOOLS="vscode claude cursor opencode kimi antigravity codex assistida"
+        ;;
+    vscode|claude|cursor|opencode|antigravity|kimi|codex|assistida)
+        TOOLS="$FERRAMENTA"
+        ;;
+    *)
+        echo "Ferramenta inválida: $FERRAMENTA" >&2
+        exit 1
+        ;;
+esac
+
+echo "Adaptadores criados:"
+for TOOL in $TOOLS; do
+    install_tool "$TOOL"
+done
+echo "Referência usada: $REFERENCIA"

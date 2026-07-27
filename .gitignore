@@ -1,0 +1,40 @@
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Arquivos locais e temporários
+*.tmp
+*.temp
+*.bak
+*.orig
+.tmp-validar-*/
+
+# Logs
+*.log
+logs/
+
+# Segredos e ambiente local
+.env
+.env.*
+!.env.example
+secrets*
+*.pem
+*.key
+
+# Dumps e backups
+*.sql
+*.sql.gz
+*.dump
+*.backup
+*.bak
+
+# Dependências/caches acidentais
+node_modules/
+vendor/
+.cache/

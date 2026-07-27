@@ -1,0 +1,13 @@
+{
+  "name": "protocolo",
+  "displayName": "Boare Protocol Dev",
+  "description": "Conduz a preparação e implementação de um sistema com agentes de IA: pergunta, registra decisões, edita arquivos quando permitido e valida o fluxo por passos. Serve a qualquer linguagem.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Paulo Boare"
+  },
+  "homepage": "https://github.com/pauloboare/BoareProtocolDev",
+  "repository": "https://github.com/pauloboare/BoareProtocolDev",
+  "license": "MIT",
+  "keywords": ["protocol", "ai", "development", "prd", "fsd", "testing"]
+}

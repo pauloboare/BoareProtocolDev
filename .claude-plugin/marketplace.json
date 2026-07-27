@@ -1,0 +1,26 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "boare",
+  "version": "1.0.0",
+  "description": "Boare Protocol Dev: condução agnóstica de sistemas da ideia ao código, com registro de decisão e testes.",
+  "owner": {
+    "name": "Paulo Boare"
+  },
+  "plugins": [
+    {
+      "name": "protocolo",
+      "displayName": "Boare Protocol Dev",
+      "description": "Conduz a preparação e implementação de um sistema com agentes de IA: pergunta, registra decisões, edita arquivos quando permitido e valida o fluxo por passos. Serve a qualquer linguagem.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Paulo Boare"
+      },
+      "category": "development",
+      "source": "./plugins/protocolo",
+      "homepage": "https://github.com/pauloboare/BoareProtocolDev",
+      "repository": "https://github.com/pauloboare/BoareProtocolDev",
+      "license": "MIT",
+      "keywords": ["protocol", "ai", "development", "prd", "fsd", "testing"]
+    }
+  ]
+}
