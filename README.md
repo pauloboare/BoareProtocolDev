@@ -23,7 +23,10 @@ como exemplo, não como stack obrigatória.
 Abra a IA que você usa e cole:
 
 ```text
-Leia https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/CONDUZIR.md e conduza o Passo 1.
+Leia o primeiro link que conseguir acessar e conduza o Passo 1 do Boare Protocol Dev:
+1. https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/COMECE_AQUI.md
+2. https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@v1/COMECE_AQUI.md
+3. https://github.com/pauloboare/BoareProtocolDev/blob/v1/COMECE_AQUI.md
 ```
 
 Pronto. A IA vai fazer uma pergunta por vez e conduzir o restante.
@@ -270,7 +273,7 @@ rastro e código funcionando sem verificação.
 Os instaladores são curtos de propósito. Eles:
 
 - criam arquivos de comando, skill, regra ou instrução persistente;
-- apontam os adaptadores para `CONDUZIR.md` em `v1`;
+- apontam os adaptadores para os arquivos públicos do protocolo em `v1`;
 - não baixam dependências;
 - não executam código remoto;
 - não sobrescrevem `docs/CONTINUAR.md` se ele já existir.
@@ -335,6 +338,8 @@ qual a base legal e como serão protegidos.
 ## O que tem neste repositório
 
 - [`CONDUZIR.md`](CONDUZIR.md): instruções principais que a IA segue.
+- [`COMECE_AQUI.md`](COMECE_AQUI.md): entrada resiliente para conduzir o
+  Passo 1 sem depender de múltiplas leituras remotas.
 - [`passos/`](passos/): um arquivo por etapa do protocolo.
 - [`PADROES.md`](PADROES.md): regras não negociáveis de código, segurança,
   dados, testes e commits.

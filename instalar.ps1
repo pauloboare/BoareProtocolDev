@@ -27,38 +27,44 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $protocolUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/CONDUZIR.md"
-$basePrompt = "Leia $protocolUrl"
+$protocolCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/CONDUZIR.md"
+$protocolGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Referencia/CONDUZIR.md"
+$startUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/COMECE_AQUI.md"
+$startCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/COMECE_AQUI.md"
+$startGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Referencia/COMECE_AQUI.md"
+$basePrompt = "Leia o primeiro link que conseguir acessar:`n1. $protocolUrl`n2. $protocolCdnUrl`n3. $protocolGitHubUrl"
+$startPrompt = "Leia o primeiro link que conseguir acessar:`n1. $startUrl`n2. $startCdnUrl`n3. $startGitHubUrl"
 
 $commands = @(
     @{
         File = 'protocolo.md'
         Description = 'Continua o Boare Protocol Dev pelo estado atual do projeto'
-        Prompt = "$basePrompt e conduza o passo atual pelo estado dos arquivos do projeto."
+        Prompt = "$basePrompt`nConduza o passo atual pelo estado dos arquivos do projeto."
     },
     @{
         File = 'protocolo-iniciar.md'
         Description = 'Inicia um projeto novo pelo Passo 1 do Boare Protocol Dev'
-        Prompt = "$basePrompt e conduza o Passo 1."
+        Prompt = "$startPrompt`nConduza o Passo 1."
     },
     @{
         File = 'protocolo-continuar.md'
         Description = 'Retoma um projeto que já usa o Boare Protocol Dev'
-        Prompt = "Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Se esse arquivo não existir, $($basePrompt.ToLower()) e descubra o passo atual pelo que existe em docs/."
+        Prompt = "Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Se esse arquivo não existir:`n$basePrompt`nDescubra o passo atual pelo que existe em docs/."
     },
     @{
         File = 'protocolo-adotar.md'
         Description = 'Adota o Boare Protocol Dev em um sistema existente'
-        Prompt = "$basePrompt e conduza o Passo 2b."
+        Prompt = "$basePrompt`nConduza o Passo 2b."
     },
     @{
         File = 'protocolo-status.md'
         Description = 'Diagnostica o estado do Boare Protocol Dev sem alterar arquivos'
-        Prompt = "$basePrompt e diagnostique o estado atual do protocolo neste projeto. Não edite arquivos, não execute ações destrutivas e não avance passos. Entregue apenas: passo atual provável, evidências encontradas, lacunas, riscos e próximo comando recomendado."
+        Prompt = "$basePrompt`nDiagnostique o estado atual do protocolo neste projeto. Não edite arquivos, não execute ações destrutivas e não avance passos. Entregue apenas: passo atual provável, evidências encontradas, lacunas, riscos e próximo comando recomendado."
     },
     @{
         File = 'protocolo-retomada.md'
         Description = 'Prepara a retomada do Boare Protocol Dev para a próxima sessão'
-        Prompt = "$basePrompt e atualize docs/CONTINUAR.md com o estado real deste projeto. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida."
+        Prompt = "$basePrompt`nAtualize docs/CONTINUAR.md com o estado real deste projeto. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida."
     }
 )
 
@@ -66,7 +72,8 @@ function New-ProtocolContinueContent {
     return @(
         '# Continuar o protocolo'
         ''
-        "$basePrompt e continue pelo estado atual deste projeto."
+        $basePrompt
+        'Continue pelo estado atual deste projeto.'
         ''
         '## Modo'
         ''
@@ -181,7 +188,10 @@ function Write-ProtocolSkill {
         ''
         '- Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         '- Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
-        "- Leia $protocolUrl."
+        '- Leia o primeiro link que conseguir acessar:'
+        "  1. $protocolUrl"
+        "  2. $protocolCdnUrl"
+        "  3. $protocolGitHubUrl"
         '- Descubra o passo atual pelo que existe em `docs/`.'
         '- Faça uma pergunta por vez.'
         '- Edite arquivos somente dentro do projeto quando a ferramenta permitir.'
@@ -199,7 +209,7 @@ function Add-CodexAgentsGuidance {
         ''
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
-        "Para conduzir o protocolo neste projeto, leia $protocolUrl e siga o passo atual pelo estado de docs/."
+        "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
         'Use docs/CONTINUAR.md como fonte de retomada entre sessões.'
     )
 
@@ -225,7 +235,7 @@ function Add-VSCodeCopilotInstructions {
         ''
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
-        "Para conduzir o protocolo neste projeto, leia $protocolUrl e siga o passo atual pelo estado de docs/."
+        "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
         'Use docs/CONTINUAR.md como fonte de retomada entre sessões.'
         'Não avance mais de um passo sem pedido explícito.'
     )
@@ -253,7 +263,7 @@ function Write-AssistedInstall {
         'Peça para a IA da ferramenta executar esta tarefa:'
         ''
         '```text'
-        "Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia $protocolUrl e conduza o passo atual pelo estado dos arquivos do projeto. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev."
+        "Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev."
         '```'
         ''
         'Depois, registre em docs/CONTINUAR.md qual caminho foi usado.'
@@ -314,7 +324,7 @@ function Install-Antigravity {
         ''
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
-        "Quando o usuário pedir para usar o protocolo, leia $protocolUrl e conduza o passo atual."
+        "Quando o usuário pedir para usar o protocolo, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Conduza o passo atual."
         'Use docs/CONTINUAR.md para retomada e não avance mais de um passo sem pedido explícito.'
     ) -Encoding utf8
     return $destino

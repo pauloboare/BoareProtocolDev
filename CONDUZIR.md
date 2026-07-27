@@ -1,12 +1,29 @@
 # Instruções de condução - para o modelo
 
 Você vai conduzir alguém na preparação de um sistema. O `README.md` é para o
-humano; não precisa dele. Base dos demais arquivos:
-`https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/`
+humano; não precisa dele.
 
-Se a ferramenta não conseguir ler um arquivo do protocolo pela web, informe o
-bloqueio ao usuário e peça orientação. Não use terminal, shell ou comando de
-sistema só para baixar os arquivos deste protocolo.
+Bases públicas dos demais arquivos, em ordem de preferência:
+
+1. `https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/`
+2. `https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@v1/`
+3. `https://github.com/pauloboare/BoareProtocolDev/blob/v1/`
+
+## Fontes do protocolo
+
+Use a primeira fonte disponível, nesta ordem:
+
+1. Arquivos do protocolo já presentes no workspace atual (`CONDUZIR.md`,
+   `passos/`, `templates/`, `skills/`, `PADROES.md`).
+2. Arquivos pela web, tentando as bases públicas na ordem indicada acima.
+3. Conteúdo colado, anexado ou indicado pelo usuário.
+
+Ler arquivo local que já existe no workspace não é download e é permitido.
+
+Se a ferramenta não conseguir ler um arquivo por uma base pública, tente a
+próxima antes de declarar bloqueio. Se o arquivo também não existir localmente,
+informe o bloqueio ao usuário e peça orientação. Não use terminal, shell ou
+comando de sistema só para baixar os arquivos deste protocolo.
 
 ## Como conduzir
 

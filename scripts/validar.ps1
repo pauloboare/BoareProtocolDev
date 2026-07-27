@@ -6,6 +6,8 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $releaseVersion = '1.0.0'
 $protocolRef = 'v1'
 $expectedRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/CONDUZIR.md"
+$expectedStartRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/COMECE_AQUI.md"
+$expectedCdnBaseUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$protocolRef/"
 $forbiddenEmDash = [string][char]0x2014
 
 function Resolve-RepoPath {
@@ -264,6 +266,7 @@ $requiredDirs = @(
 
 $requiredFiles = @(
     'README.md',
+    'COMECE_AQUI.md',
     'CONDUZIR.md',
     'PADROES.md',
     'LICENSE',
@@ -361,6 +364,7 @@ Assert-TextContains 'README.md' 'agnóstico a modelo de IA, IDE e linguagem'
 Assert-TextContains 'README.md' 'Foi pensado para agentes'
 Assert-TextContains 'README.md' 'Exemplos técnicos são permitidos'
 Assert-TextContains 'README.md' '## Quick Start'
+Assert-TextContains 'README.md' 'COMECE_AQUI.md'
 Assert-TextContains 'README.md' '## Instalação'
 Assert-TextContains 'README.md' '## Comandos instalados'
 Assert-TextContains 'README.md' '## Upgrade'
@@ -389,9 +393,7 @@ Assert-TextDoesNotContain 'README.md' 'A URL aponta para `main` de propósito'
 Assert-TextDoesNotContain 'README.md' 'No GitHub, o botão de copiar aparece'
 
 $filesThatMustPointToRelease = @(
-    'README.md',
     'plugins\protocolo\commands\protocolo.md',
-    'plugins\protocolo\commands\protocolo-iniciar.md',
     'plugins\protocolo\commands\protocolo-continuar.md',
     'plugins\protocolo\commands\protocolo-adotar.md',
     'plugins\protocolo\commands\protocolo-status.md',
@@ -403,7 +405,18 @@ foreach ($file in $filesThatMustPointToRelease) {
     Assert-TextDoesNotContain $file 'cole o conteúdo do arquivo'
 }
 
+Assert-TextContains 'README.md' $expectedStartRawUrl
+Assert-TextContains 'README.md' 'cdn.jsdelivr.net'
+Assert-TextContains 'plugins\protocolo\commands\protocolo-iniciar.md' $expectedStartRawUrl
+Assert-TextContains 'plugins\protocolo\commands\protocolo-iniciar.md' 'cdn.jsdelivr.net'
+Assert-TextContains 'COMECE_AQUI.md' $expectedStartRawUrl
+Assert-TextContains 'COMECE_AQUI.md' 'Passo 1'
+Assert-TextContains 'COMECE_AQUI.md' 'Que problema o sistema resolve?'
+Assert-TextContains 'COMECE_AQUI.md' 'Pare no fim do Passo 1'
+
 Assert-TextContains 'CONDUZIR.md' "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/"
+Assert-TextContains 'CONDUZIR.md' $expectedCdnBaseUrl
+Assert-TextContains 'CONDUZIR.md' 'Arquivos do protocolo já presentes no workspace atual'
 Assert-TextContains 'CONDUZIR.md' 'Se a ferramenta tiver permissão de agente'
 Assert-TextContains 'CONDUZIR.md' 'Para publicar, criar remoto, instalar dependência'
 Assert-TextContains 'CONDUZIR.md' 'Se ele citar `templates/`, `skills/` ou'

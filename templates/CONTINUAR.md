@@ -1,6 +1,12 @@
 # Continuar o protocolo
 
-Leia https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/CONDUZIR.md e continue pelo estado atual deste projeto.
+Leia o primeiro link que conseguir acessar:
+
+1. https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/CONDUZIR.md
+2. https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@v1/CONDUZIR.md
+3. https://github.com/pauloboare/BoareProtocolDev/blob/v1/CONDUZIR.md
+
+Continue pelo estado atual deste projeto.
 
 ## Modo
 
