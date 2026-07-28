@@ -24,11 +24,15 @@ PROJETO=0
 FERRAMENTA="auto"
 REFERENCIA="v1"
 PROTOCOL_VERSION="1.0.1"
+STATUS=0
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --projeto)
             PROJETO=1
+            ;;
+        --status)
+            STATUS=1
             ;;
         --ferramenta)
             shift
@@ -363,6 +367,34 @@ copy_protocol_bundle() {
 FIM
 }
 
+show_protocol_status() {
+    MANIFEST=".boare/protocolo/protocolo.json"
+    echo "Boare Protocol Dev"
+    echo "Versão disponível neste instalador: $PROTOCOL_VERSION ($REFERENCIA)"
+
+    if [ ! -f "$MANIFEST" ]; then
+        echo "Versão instalada neste projeto: nenhuma"
+        echo "Para instalar, rode o comando de instalação com --projeto."
+        return
+    fi
+
+    INSTALLED_VERSION=$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$MANIFEST" | head -1)
+    INSTALLED_REF=$(sed -n 's/.*"reference"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$MANIFEST" | head -1)
+    echo "Versão instalada neste projeto: $INSTALLED_VERSION ($INSTALLED_REF)"
+
+    if [ "$INSTALLED_VERSION" = "$PROTOCOL_VERSION" ] && [ "$INSTALLED_REF" = "$REFERENCIA" ]; then
+        echo "Status: atualizado para a referência informada."
+    else
+        echo "Status: há diferença entre a versão instalada e a versão disponível neste instalador."
+        echo "Para atualizar, rode novamente a instalação com --projeto."
+    fi
+}
+
+if [ "$STATUS" -eq 1 ]; then
+    show_protocol_status
+    exit 0
+fi
+
 add_codex_agents_guidance() {
     if [ "$PROJETO" -ne 1 ]; then
         return
@@ -535,3 +567,15 @@ for TOOL in $TOOLS; do
     install_tool "$TOOL"
 done
 echo "Referência usada: $REFERENCIA"
+if [ "$PROJETO" -eq 1 ]; then
+    echo ""
+    echo "Boare Protocol Dev instalado neste projeto."
+    echo "Próximo passo na sua IDE ou agente:"
+    echo "Use o Boare Protocol Dev deste projeto e conduza o passo atual."
+    case " $TOOLS " in
+        *" assistida "*)
+            echo ""
+            echo "A ferramenta não foi detectada automaticamente. Se necessário, abra docs/INSTALAR_PROTOCOLO.md na sua IDE para concluir o adaptador."
+            ;;
+    esac
+fi

@@ -42,6 +42,15 @@ exemplo, não como stack obrigatória.
 
 Rode dentro da pasta do projeto onde o sistema será construído.
 
+Para abrir o terminal no lugar certo:
+
+- VS Code: abra a pasta do projeto e use `Terminal > New Terminal`.
+- Windows Explorer: entre na pasta do projeto, clique na barra de endereço,
+  digite `pwsh` e pressione Enter.
+- macOS Finder: abra a pasta, clique com o botão direito e escolha abrir no
+  Terminal, quando essa opção estiver habilitada.
+- Terminal comum: use `cd caminho/do/projeto` antes de rodar o comando.
+
 macOS / Linux:
 
 ```bash
@@ -57,7 +66,11 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/paulo
 ```
 
 O modo `auto` detecta a ferramenta de IA usada no projeto e instala o adaptador
-adequado.
+adequado. Se preferir escolher manualmente, troque `auto` por `vscode`,
+`claude`, `cursor`, `opencode`, `kimi`, `antigravity`, `codex` ou `todas`.
+Se o resultado for `assistida`, o protocolo foi instalado, mas a ferramenta não
+foi reconhecida automaticamente; siga o arquivo `docs/INSTALAR_PROTOCOLO.md`
+para concluir o adaptador.
 
 A instalação por projeto cria:
 
@@ -70,6 +83,13 @@ A instalação por projeto cria:
 
 GitHub é usado para instalar ou atualizar. O uso normal do protocolo lê a cópia
 local do projeto.
+
+Ao terminar, o instalador mostra a próxima mensagem para usar na sua IDE ou
+agente:
+
+```text
+Use o Boare Protocol Dev deste projeto e conduza o passo atual.
+```
 
 ## Uso diário
 
@@ -117,9 +137,6 @@ versionado.
 | Codex | `.codex/skills/protocolo` e orientação em `AGENTS.md` |
 | Outra ferramenta | `docs/INSTALAR_PROTOCOLO.md` para instalação assistida |
 
-Para escolher uma ferramenta específica, troque `auto` por `vscode`, `claude`,
-`cursor`, `opencode`, `kimi`, `antigravity`, `codex` ou `todas`.
-
 ## Instalação por clone local
 
 Use este caminho se quiser revisar tudo antes de executar, ou se a máquina não
@@ -164,14 +181,34 @@ Cada projeto fixa a versão do protocolo que usa. A cópia em
 `.boare/protocolo/protocolo.json`.
 
 A IA não deve consultar o GitHub a cada sessão nem perguntar sempre se há
-atualização. Sessão normal usa a versão local. Atualização é uma ação explícita:
+atualização. Sessão normal usa a versão local.
+
+Para verificar a versão instalada e a versão disponível na referência escolhida:
+
+macOS / Linux:
 
 ```bash
-sh instalar.sh --projeto --ferramenta auto --ref v1
+curl -fsSL https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/bootstrap.sh | sh -s -- --projeto --status
+```
+
+Windows PowerShell:
+
+```powershell
+$b = Join-Path $env:TEMP "boare-bootstrap.ps1"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/bootstrap.ps1" -OutFile $b
+& $b -Projeto -Status
+```
+
+Para atualizar, rode novamente a instalação:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/bootstrap.sh | sh -s -- --projeto --ferramenta auto
 ```
 
 ```powershell
-.\instalar.ps1 -Projeto -Ferramenta auto -Referencia v1
+$b = Join-Path $env:TEMP "boare-bootstrap.ps1"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/bootstrap.ps1" -OutFile $b
+& $b -Projeto -Ferramenta auto
 ```
 
 Depois de atualizar, revise o diff em `.boare/protocolo/`, rode a validação do

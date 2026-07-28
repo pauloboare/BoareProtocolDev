@@ -19,6 +19,7 @@
 
 param(
     [switch]$Projeto,
+    [switch]$Status,
     [ValidateSet('auto', 'vscode', 'claude', 'cursor', 'opencode', 'antigravity', 'kimi', 'codex', 'todas', 'assistida')]
     [string]$Ferramenta = 'auto',
     [string]$Referencia = 'v1'
@@ -168,6 +169,28 @@ function Copy-ProtocolBundle {
         entrypoint = 'CONDUZIR.md'
     } | ConvertTo-Json
     Set-Content -Path (Join-Path $bundleDestino 'protocolo.json') -Value $manifest -Encoding utf8
+}
+
+function Show-ProtocolStatus {
+    $manifestPath = '.boare\protocolo\protocolo.json'
+    Write-Output "Boare Protocol Dev"
+    Write-Output "Versão disponível neste instalador: $protocolVersion ($Referencia)"
+
+    if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
+        Write-Output "Versão instalada neste projeto: nenhuma"
+        Write-Output "Para instalar, rode o comando de instalação com -Projeto."
+        return
+    }
+
+    $installed = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+    Write-Output "Versão instalada neste projeto: $($installed.version) ($($installed.reference))"
+
+    if (($installed.version -eq $protocolVersion) -and ($installed.reference -eq $Referencia)) {
+        Write-Output "Status: atualizado para a referência informada."
+    } else {
+        Write-Output "Status: há diferença entre a versão instalada e a versão disponível neste instalador."
+        Write-Output "Para atualizar, rode novamente a instalação com -Projeto."
+    }
 }
 
 function Write-CommandFiles {
@@ -428,6 +451,11 @@ function Resolve-AutoTools {
     return $detected
 }
 
+if ($Status) {
+    Show-ProtocolStatus
+    return
+}
+
 if ($Projeto) {
     New-Item -ItemType Directory -Force -Path 'docs' | Out-Null
     Copy-ProtocolBundle
@@ -454,3 +482,14 @@ foreach ($tool in $tools) {
 Write-Output "Adaptadores criados:"
 $created | ForEach-Object { Write-Output "- $_" }
 Write-Output "Referência usada: $Referencia"
+
+if ($Projeto) {
+    Write-Output ""
+    Write-Output "Boare Protocol Dev instalado neste projeto."
+    Write-Output "Próximo passo na sua IDE ou agente:"
+    Write-Output "Use o Boare Protocol Dev deste projeto e conduza o passo atual."
+    if ($tools -contains 'assistida') {
+        Write-Output ""
+        Write-Output "A ferramenta não foi detectada automaticamente. Se necessário, abra docs\INSTALAR_PROTOCOLO.md na sua IDE para concluir o adaptador."
+    }
+}

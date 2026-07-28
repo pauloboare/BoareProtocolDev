@@ -14,6 +14,7 @@
 
 param(
     [switch]$Projeto,
+    [switch]$Status,
     [ValidateSet('auto', 'vscode', 'claude', 'cursor', 'opencode', 'antigravity', 'kimi', 'codex', 'todas', 'assistida')]
     [string]$Ferramenta = 'auto',
     [string]$Referencia = 'v1'
@@ -55,6 +56,7 @@ try {
         Referencia  = $Referencia
     }
     if ($Projeto) { $instalarArgs['Projeto'] = $true }
+    if ($Status) { $instalarArgs['Status'] = $true }
 
     & (Join-Path $sourceDir.FullName 'instalar.ps1') @instalarArgs
 }
