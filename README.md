@@ -17,15 +17,18 @@ mas também funciona em modo assistido quando a IA só consegue conversar.
 O protocolo não vem preso a um conjunto de tecnologias. Ele pode sugerir
 linguagem, framework, banco, hospedagem ou ferramenta quando isso ajudar a
 decisão, mas a sugestão precisa vir com motivo, alternativas e custo de trocar
-depois. Exemplos técnicos aparecem só para ilustrar, nunca como stack
-obrigatória.
+depois.
+
+Exemplos técnicos são permitidos quando ajudam a explicar. Eles devem aparecer
+como exemplo, não como stack obrigatória.
 
 ## Sumário
 
 - [Por que usar](#por-que-usar)
 - [Para quem serve](#para-quem-serve)
 - [Instalação](#instalação)
-- [Início rápido](#início-rápido)
+- [Fluxo recomendado](#fluxo-recomendado)
+- [Quick Start](#quick-start)
 - [Comandos instalados](#comandos-instalados)
 - [O que ele entrega](#o-que-ele-entrega)
 - [Como funciona](#como-funciona)
@@ -35,6 +38,7 @@ obrigatória.
 - [Se você já tem um sistema pronto](#se-você-já-tem-um-sistema-pronto)
 - [Segurança e privacidade](#segurança-e-privacidade)
 - [Versionamento do protocolo](#versionamento-do-protocolo)
+- [Upgrade](#upgrade)
 - [Plugin para Claude Code](#plugin-para-claude-code)
 - [Estrutura do repositório](#estrutura-do-repositório)
 - [Para agentes de IA](#para-agentes-de-ia)
@@ -80,7 +84,7 @@ esperar você decidir.
 
 Rode o comando abaixo **dentro da pasta do projeto** onde o sistema será
 construído. Ele baixa o protocolo do GitHub para uma pasta temporária, instala
-os adaptadores no projeto atual e depois descarta a pasta temporária — não
+os adaptadores no projeto atual e depois descarta a pasta temporária. Não
 precisa clonar nada manualmente antes.
 
 ### 1. Escolha o comando do seu sistema
@@ -115,26 +119,6 @@ Code, Cursor, etc.) e instala o adaptador certo automaticamente.
 Se o modo `auto` não conseguir detectar a ferramenta, ele cria
 `docs/INSTALAR_PROTOCOLO.md` com a instrução para a própria IA da ferramenta
 concluir a instalação no formato correto.
-
-### 3. Peça para a IA conduzir
-
-Depois de instalar, em qualquer IDE ou agente, peça:
-
-```text
-Use o Boare Protocol Dev deste projeto e conduza o passo atual.
-```
-
-A IA deve ler primeiro os arquivos locais do projeto — nesta ordem:
-
-1. `.boare/protocolo/CONDUZIR.md`
-2. `docs/CONTINUAR.md`
-
-GitHub e CDN ficam apenas como fallback de instalação ou atualização. O uso
-normal do protocolo não depende de internet.
-
-> Instalar não obriga a IA a usar o protocolo em toda tarefa. O adaptador
-> apenas deixa o protocolo disponível. A IA só conduz o protocolo quando você
-> pedir.
 
 ### Ferramentas suportadas
 
@@ -174,10 +158,30 @@ cd meu-projeto  # a pasta do seu sistema, não a do clone acima
 
 `instalar.sh`/`instalar.ps1` aceitam as mesmas opções de `--ferramenta` da
 tabela acima, incluindo `todas`. É exatamente isso que `bootstrap.sh` e
-`bootstrap.ps1` baixam e executam por baixo dos panos — a diferença é só
+`bootstrap.ps1` baixam e executam por baixo dos panos. A diferença é só
 não precisar manter o clone depois de instalado.
 
-## Início rápido
+## Fluxo recomendado
+
+Depois de instalar, em qualquer IDE ou agente, peça:
+
+```text
+Use o Boare Protocol Dev deste projeto e conduza o passo atual.
+```
+
+A IA deve ler primeiro os arquivos locais do projeto, nesta ordem:
+
+1. `.boare/protocolo/CONDUZIR.md`
+2. `docs/CONTINUAR.md`
+
+GitHub e CDN ficam apenas como fallback de instalação ou atualização. O uso
+normal do protocolo não depende de internet.
+
+> Instalar não obriga a IA a usar o protocolo em toda tarefa. O adaptador
+> apenas deixa o protocolo disponível.
+> A IA só deve conduzi-lo quando você pedir.
+
+## Quick Start
 
 Quer testar o protocolo antes de instalar qualquer coisa? Cole isto na sua IA:
 
@@ -334,7 +338,7 @@ Os instaladores são curtos de propósito. Eles:
 - não sobrescrevem `docs/CONTINUAR.md` se ele já existir.
 
 `bootstrap.sh` e `bootstrap.ps1` baixam este repositório do GitHub e executam
-`instalar.sh`/`instalar.ps1` de dentro dele — é código remoto, do mesmo jeito
+`instalar.sh`/`instalar.ps1` de dentro dele. É código remoto, do mesmo jeito
 que `curl | sh` de qualquer outro instalador. Leia o script antes de rodar em
 uma máquina ou projeto sensível; se preferir revisar tudo antes de executar,
 use a [instalação a partir de um clone local](#instalação-a-partir-de-um-clone-local).
@@ -373,8 +377,8 @@ Boa prática: cada projeto fixa a versão do protocolo que usa. A cópia em
 um manifesto em `.boare/protocolo/protocolo.json`.
 
 A IA não deve consultar o GitHub a cada sessão nem perguntar sempre se há
-atualização. Sessão normal usa a versão local. Atualização é uma ação
-explícita:
+atualização. Sessão normal usa a versão local.
+Atualização é uma ação explícita:
 
 ```bash
 sh instalar.sh --projeto --ferramenta auto --ref v1
@@ -387,6 +391,11 @@ sh instalar.sh --projeto --ferramenta auto --ref v1
 Depois de atualizar, revise o diff em `.boare/protocolo/`, rode a validação do
 projeto e faça commit. Em equipe, atualize em um PR próprio para ficar claro
 que mudou o protocolo, não o sistema.
+
+## Upgrade
+
+Por padrão, os instaladores usam `v1`, que é o canal estável da primeira
+versão do protocolo.
 
 - Use `v1` para acompanhar correções compatíveis do canal estável.
 - Use uma tag fixa, como `v1.0.1`, quando quiser congelar totalmente o
