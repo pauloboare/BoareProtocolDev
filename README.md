@@ -78,28 +78,32 @@ esperar você decidir.
 
 ## Instalação
 
-A instalação local é o caminho recomendado: ela cria uma cópia versionável do
-protocolo dentro do seu projeto, para a IA ler sem depender de internet.
+Rode o comando abaixo **dentro da pasta do projeto** onde o sistema será
+construído. Ele baixa o protocolo do GitHub para uma pasta temporária, instala
+os adaptadores no projeto atual e depois descarta a pasta temporária — não
+precisa clonar nada manualmente antes.
 
 ### 1. Escolha o comando do seu sistema
-
-Rode o comando abaixo **dentro da pasta do projeto** onde o sistema será
-construído.
 
 macOS / Linux:
 
 ```bash
-sh instalar.sh --projeto --ferramenta auto
+curl -fsSL https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/bootstrap.sh | sh -s -- --projeto --ferramenta auto
 ```
 
 Windows (PowerShell):
 
 ```powershell
-.\instalar.ps1 -Projeto -Ferramenta auto
+$b = Join-Path $env:TEMP "boare-bootstrap.ps1"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/bootstrap.ps1" -OutFile $b
+& $b -Projeto -Ferramenta auto
 ```
 
 O modo `auto` detecta a ferramenta de IA usada no projeto (VS Code, Claude
 Code, Cursor, etc.) e instala o adaptador certo automaticamente.
+
+> Prefere revisar o script antes de rodar, ou já tem o repositório clonado?
+> Veja [Instalação a partir de um clone local](#instalação-a-partir-de-um-clone-local).
 
 ### 2. O que a instalação cria
 
@@ -145,37 +149,33 @@ normal do protocolo não depende de internet.
 | Codex | `.codex/skills/protocolo` e orientação em `AGENTS.md` |
 | Outra ferramenta | `docs/INSTALAR_PROTOCOLO.md` para instalação assistida |
 
-Para instalar o adaptador de uma ferramenta específica em vez de `auto`:
+Para instalar o adaptador de uma ferramenta específica em vez de `auto`,
+troque `auto` por `cursor`, `vscode`, `claude`, `opencode`, `kimi`,
+`antigravity` ou `codex` no comando do passo 1. Para instalar todos os
+adaptadores de uma vez, use `todas`.
+
+### Instalação a partir de um clone local
+
+Prefere revisar o script antes de rodar, já tem o repositório clonado, ou
+está numa máquina sem `curl`/acesso direto à internet? Clone e rode o
+instalador local:
 
 ```bash
-sh instalar.sh --projeto --ferramenta cursor
-sh instalar.sh --projeto --ferramenta vscode
-sh instalar.sh --projeto --ferramenta claude
-sh instalar.sh --projeto --ferramenta opencode
-sh instalar.sh --projeto --ferramenta kimi
-sh instalar.sh --projeto --ferramenta antigravity
-sh instalar.sh --projeto --ferramenta codex
+git clone https://github.com/pauloboare/BoareProtocolDev.git
+cd meu-projeto  # a pasta do seu sistema, não a do clone acima
+sh ../BoareProtocolDev/instalar.sh --projeto --ferramenta auto
 ```
 
 ```powershell
-.\instalar.ps1 -Projeto -Ferramenta cursor
-.\instalar.ps1 -Projeto -Ferramenta vscode
-.\instalar.ps1 -Projeto -Ferramenta claude
-.\instalar.ps1 -Projeto -Ferramenta opencode
-.\instalar.ps1 -Projeto -Ferramenta kimi
-.\instalar.ps1 -Projeto -Ferramenta antigravity
-.\instalar.ps1 -Projeto -Ferramenta codex
+git clone https://github.com/pauloboare/BoareProtocolDev.git
+cd meu-projeto  # a pasta do seu sistema, não a do clone acima
+..\BoareProtocolDev\instalar.ps1 -Projeto -Ferramenta auto
 ```
 
-Ou instale todos os adaptadores de uma vez:
-
-```bash
-sh instalar.sh --projeto --ferramenta todas
-```
-
-```powershell
-.\instalar.ps1 -Projeto -Ferramenta todas
-```
+`instalar.sh`/`instalar.ps1` aceitam as mesmas opções de `--ferramenta` da
+tabela acima, incluindo `todas`. É exatamente isso que `bootstrap.sh` e
+`bootstrap.ps1` baixam e executam por baixo dos panos — a diferença é só
+não precisar manter o clone depois de instalado.
 
 ## Início rápido
 
@@ -330,12 +330,14 @@ Os instaladores são curtos de propósito. Eles:
 - criam arquivos de comando, skill, regra ou instrução persistente;
 - copiam o protocolo para `.boare/protocolo/`;
 - fazem os adaptadores lerem a cópia local antes de qualquer fallback remoto;
-- não baixam dependências;
-- não executam código remoto;
+- não baixam dependências além do próprio protocolo;
 - não sobrescrevem `docs/CONTINUAR.md` se ele já existir.
 
-Leia o script antes de rodar se estiver instalando em uma máquina ou projeto
-sensível.
+`bootstrap.sh` e `bootstrap.ps1` baixam este repositório do GitHub e executam
+`instalar.sh`/`instalar.ps1` de dentro dele — é código remoto, do mesmo jeito
+que `curl | sh` de qualquer outro instalador. Leia o script antes de rodar em
+uma máquina ou projeto sensível; se preferir revisar tudo antes de executar,
+use a [instalação a partir de um clone local](#instalação-a-partir-de-um-clone-local).
 
 ## Se você já tem um sistema pronto
 
@@ -426,7 +428,10 @@ Depois disso, use `/protocolo`.
   técnicas e `.gitignore`.
 - [`plugins/`](plugins/): adaptador opcional para Claude Code.
 - [`instalar.sh`](instalar.sh) / [`instalar.ps1`](instalar.ps1): instaladores
-  para macOS/Linux e Windows.
+  locais para macOS/Linux e Windows, usados a partir de um clone do repositório.
+- [`bootstrap.sh`](bootstrap.sh) / [`bootstrap.ps1`](bootstrap.ps1): baixam o
+  repositório numa pasta temporária e chamam o instalador local, para instalar
+  direto do GitHub sem clone manual.
 
 ## Para agentes de IA
 
