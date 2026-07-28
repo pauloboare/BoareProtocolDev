@@ -23,7 +23,8 @@ Ler arquivo local que já existe no workspace não é download e é permitido.
 Se a ferramenta não conseguir ler um arquivo por uma base pública, tente a
 próxima antes de declarar bloqueio. Se o arquivo também não existir localmente,
 informe o bloqueio ao usuário e peça orientação. Não use terminal, shell ou
-comando de sistema só para baixar os arquivos deste protocolo.
+comando de sistema só para baixar os arquivos deste protocolo, nem tente
+contornar falha de rede com PowerShell, curl, Python ou ferramenta equivalente.
 
 ## Estado e retomada
 

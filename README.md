@@ -27,6 +27,10 @@ Leia o primeiro link que conseguir acessar e conduza o Passo 1 do Boare Protocol
 1. https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/COMECE_AQUI.md
 2. https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@v1/COMECE_AQUI.md
 3. https://github.com/pauloboare/BoareProtocolDev/blob/v1/COMECE_AQUI.md
+
+Use o mecanismo nativo da ferramenta para ler URL. Não use terminal, shell,
+PowerShell, curl ou Python só para baixar esses arquivos. Se os três links
+falharem, diga isso e peça orientação.
 ```
 
 Pronto. A IA vai fazer uma pergunta por vez e conduzir o restante.
@@ -37,6 +41,24 @@ qualquer ferramenta capaz de ler uma URL pública.
 Se o projeto já tiver `docs/CONTINUAR.md` ou outros artefatos em `docs/`, não
 use o Quick Start para reiniciar. Peça para a IA ler `docs/CONTINUAR.md` e
 continuar pelo estado atual do repositório.
+
+### Codex sem espera
+
+No Codex, o caminho mais rápido é instalar o adaptador local uma vez dentro do
+projeto:
+
+```powershell
+.\instalar.ps1 -Projeto -Ferramenta codex
+```
+
+Depois, em vez de colar os links públicos, peça:
+
+```text
+Use o Boare Protocol Dev instalado neste projeto e conduza o passo atual.
+```
+
+Assim o Codex lê a skill local e `docs/CONTINUAR.md`, sem depender de GitHub,
+CDN, cache do navegador interno ou TLS do Windows para começar.
 
 ## Instalação
 

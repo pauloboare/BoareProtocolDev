@@ -39,8 +39,9 @@ Para os demais arquivos do protocolo, use as mesmas bases:
 3. `https://github.com/pauloboare/BoareProtocolDev/blob/v1/`
 
 Nao use terminal, shell ou comando de sistema so para baixar arquivos deste
-protocolo. Se nao conseguir ler pela web nem houver copia local, peça orientacao
-ao usuario.
+protocolo. Tambem nao tente contornar falha de rede com PowerShell, curl, Python
+ou ferramenta equivalente. Se nao conseguir ler pela web nem houver copia local,
+peça orientacao ao usuario.
 
 ## Como conduzir o Passo 1
 
