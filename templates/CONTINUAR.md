@@ -14,6 +14,9 @@ Continue pelo estado atual deste projeto.
 - Este arquivo deve ser versionado no repositório do sistema.
 - Antes de trabalhar em outro computador, atualize o repositório local e leia
   este arquivo.
+- A versão local do protocolo fica em `.boare/protocolo/protocolo.json`.
+- Não cheque atualização do protocolo a cada sessão; atualize só por pedido
+  explícito.
 - Ao encerrar uma sessão ou concluir um passo, rode `/protocolo-retomada` ou
   atualize este arquivo manualmente.
 - Se alguém chamar `/protocolo-iniciar` em um clone que já tem este arquivo,

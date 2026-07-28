@@ -48,54 +48,9 @@ A IA deve ler primeiro os arquivos locais do projeto:
 GitHub e CDN ficam apenas como fallback de instalação ou atualização. O uso
 normal do protocolo não depende de internet.
 
-## Quick Start sem instalar
+## Quick Start por URL
 
-Abra a IA que você usa e cole:
-
-```text
-Use o Boare Protocol Dev e conduza somente o Passo 1.
-
-Antes de iniciar, confira se o projeto atual já tem docs/CONTINUAR.md ou
-artefatos do protocolo em docs/. Se tiver, não reinicie: leia docs/CONTINUAR.md
-e retome pelo estado atual.
-
-Se não houver estado anterior, faça uma pergunta por vez. Comece oferecendo a
-escolha: posso explicar a ideia do sistema com minhas próprias palavras, ou você
-pode fazer as oito perguntas uma a uma.
-
-Se eu explicar primeiro, extraia do texto o que já responde às oito perguntas,
-devolva numerado o que entendeu e pergunte só o que faltou, uma por vez. Não
-invente resposta. Lacuna vira pergunta.
-
-Se eu preferir as perguntas, faça uma por vez. Depois de cada resposta, repita
-em uma linha o que entendeu e confirme. Resposta vaga pede caso concreto.
-
-Não proponha solução técnica no Passo 1. Nada de banco, framework ou tela.
-Não amplie escopo. Segurança e LGPD valem sempre.
-
-Perguntas obrigatórias:
-1. Que problema o sistema resolve? Uma frase.
-2. Quem usa? Liste os papéis.
-3. O que a pessoa consegue fazer no sistema que hoje não consegue?
-4. Qual é a única funcionalidade que, se faltar, o sistema não serve para nada?
-5. O que explicitamente não faz parte? No mínimo três itens.
-6. Qual é o canal de uso? Web, mobile, desktop, linha de comando, API,
-   automação, biblioteca ou integração.
-7. Quantos usuários ao mesmo tempo? Ordem de grandeza basta.
-8. Lida com dado pessoal? Qual exatamente?
-
-No fim, apresente as oito respostas juntas e numeradas, sem criar arquivo, e
-peça confirmação. Pare no fim do Passo 1. Só avance quando eu mandar.
-```
-
-Pronto. A IA vai fazer uma pergunta por vez e conduzir o Passo 1.
-
-Esse modo funciona em Codex, Cursor, Claude Code, ChatGPT, Claude, Gemini e
-qualquer ferramenta que aceite texto colado. Ele não depende de internet,
-GitHub, plugin ou leitura de URL, mas é só a porta de entrada. Para continuar em
-equipe, instale o protocolo localmente no projeto.
-
-Se preferir o prompt curto por URL, cole:
+Se não quiser instalar ainda, cole:
 
 ```text
 Leia o primeiro link que conseguir acessar e conduza o Passo 1 do Boare Protocol Dev:
@@ -181,6 +136,31 @@ a própria ferramenta deve carregar o adaptador instalado.
 
 Instalar não obriga a IA a usar o protocolo em toda tarefa. O adaptador apenas
 deixa o protocolo disponível. A IA só deve conduzi-lo quando você pedir.
+
+## Versionamento do protocolo
+
+Boa prática: cada projeto fixa a versão do protocolo que usa. A cópia em
+`.boare/protocolo/` é tratada como parte do repositório do sistema, junto com
+um manifesto em `.boare/protocolo/protocolo.json`.
+
+A IA não deve consultar o GitHub a cada sessão nem perguntar sempre se há
+atualização. Sessão normal usa a versão local. Atualização é uma ação explícita:
+
+```bash
+sh instalar.sh --projeto --ferramenta auto --ref v1
+```
+
+```powershell
+.\instalar.ps1 -Projeto -Ferramenta auto -Referencia v1
+```
+
+Depois de atualizar, revise o diff em `.boare/protocolo/`, rode a validação do
+projeto e faça commit. Em equipe, atualize em um PR próprio para ficar claro que
+mudou o protocolo, não o sistema.
+
+Use `v1` para acompanhar correções compatíveis do canal estável. Use uma tag
+fixa, como `v1.0.1`, quando quiser congelar totalmente o comportamento do
+protocolo naquele projeto.
 
 ### Instalação por ferramenta
 
@@ -374,7 +354,8 @@ rastro e código funcionando sem verificação.
 Os instaladores são curtos de propósito. Eles:
 
 - criam arquivos de comando, skill, regra ou instrução persistente;
-- apontam os adaptadores para os arquivos públicos do protocolo em `v1`;
+- copiam o protocolo para `.boare/protocolo/`;
+- fazem os adaptadores lerem a cópia local antes de qualquer fallback remoto;
 - não baixam dependências;
 - não executam código remoto;
 - não sobrescrevem `docs/CONTINUAR.md` se ele já existir.
@@ -398,8 +379,8 @@ Depois disso, use `/protocolo`.
 
 ## Upgrade
 
-O uso universal e os adaptadores instalados apontam para `v1`, que é o canal
-estável da primeira versão do protocolo.
+Por padrão, os instaladores usam `v1`, que é o canal estável da primeira versão
+do protocolo.
 
 `main` deve ser tratado como desenvolvimento. Use `main` apenas se quiser testar
 a versão mais recente antes de ela entrar no canal estável.
@@ -407,11 +388,11 @@ a versão mais recente antes de ela entrar no canal estável.
 Para congelar totalmente um projeto, use uma tag fixa, por exemplo `v1.0.0`,
 no comando ou instalador.
 
-Em projetos de equipe, a recomendação prática é versionar `docs/CONTINUAR.md`
-e registrar nele se o projeto segue `v1`, `main` ou uma tag fixa. Antes de
-outra pessoa começar em outro computador, envie esse arquivo junto com os
-artefatos do passo concluído. Ao terminar uma sessão, rode `/protocolo-retomada`
-para deixar o próximo item escrito no repositório.
+Em projetos de equipe, versionar `.boare/protocolo/` e `docs/CONTINUAR.md` é o
+que permite outro computador continuar sem baixar o protocolo de novo. Antes de
+outra pessoa começar, envie esses arquivos junto com os artefatos do passo
+concluído. Ao terminar uma sessão, rode `/protocolo-retomada` para deixar o
+próximo item escrito no repositório.
 
 ## Se você já tem um sistema pronto
 

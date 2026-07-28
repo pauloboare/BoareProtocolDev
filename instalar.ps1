@@ -26,6 +26,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+$protocolVersion = '1.0.1'
 $protocolUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/CONDUZIR.md"
 $protocolCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/CONDUZIR.md"
 $protocolGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Referencia/CONDUZIR.md"
@@ -158,6 +159,15 @@ function Copy-ProtocolBundle {
         New-Item -ItemType Directory -Force -Path $destDir | Out-Null
         Copy-Item -Path (Join-Path $sourceDir '*') -Destination $destDir -Recurse -Force
     }
+
+    $manifest = [ordered]@{
+        name = 'boare-protocol-dev'
+        version = $protocolVersion
+        reference = $Referencia
+        update_policy = 'manual'
+        entrypoint = 'CONDUZIR.md'
+    } | ConvertTo-Json
+    Set-Content -Path (Join-Path $bundleDestino 'protocolo.json') -Value $manifest -Encoding utf8
 }
 
 function Write-CommandFiles {

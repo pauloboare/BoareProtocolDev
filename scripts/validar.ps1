@@ -99,6 +99,7 @@ function Invoke-PowerShellInstallerSmokeTests {
         Assert-SmokeFile $autoEmpty 'docs\CONTINUAR.md'
         Assert-SmokeFile $autoEmpty 'docs\INSTALAR_PROTOCOLO.md'
         Assert-SmokeFile $autoEmpty '.boare\protocolo\CONDUZIR.md'
+        Assert-SmokeFile $autoEmpty '.boare\protocolo\protocolo.json'
         Assert-SmokeFile $autoEmpty '.boare\protocolo\passos\01-explorar-ideia.md'
     } finally {
         Remove-SmokeTestDir $autoEmpty
@@ -111,6 +112,7 @@ function Invoke-PowerShellInstallerSmokeTests {
         try { & $installer -Projeto -Ferramenta auto | Out-Null } finally { Pop-Location }
         Assert-SmokeFile $autoCodex '.codex\skills\protocolo\SKILL.md'
         Assert-SmokeFile $autoCodex '.boare\protocolo\CONDUZIR.md'
+        Assert-SmokeFile $autoCodex '.boare\protocolo\protocolo.json'
     } finally {
         Remove-SmokeTestDir $autoCodex
     }
@@ -122,6 +124,7 @@ function Invoke-PowerShellInstallerSmokeTests {
         try { & $installer -Projeto -Ferramenta auto | Out-Null } finally { Pop-Location }
         Assert-SmokeFile $autoVSCode '.github\copilot-instructions.md'
         Assert-SmokeFile $autoVSCode '.boare\protocolo\CONDUZIR.md'
+        Assert-SmokeFile $autoVSCode '.boare\protocolo\protocolo.json'
     } finally {
         Remove-SmokeTestDir $autoVSCode
     }
@@ -143,6 +146,7 @@ function Invoke-PowerShellInstallerSmokeTests {
         Assert-SmokeFile $allTools 'docs\CONTINUAR.md'
         Assert-SmokeFile $allTools 'AGENTS.md'
         Assert-SmokeFile $allTools '.boare\protocolo\CONDUZIR.md'
+        Assert-SmokeFile $allTools '.boare\protocolo\protocolo.json'
         Assert-SmokeFile $allTools '.boare\protocolo\templates\CONTINUAR.md'
     } finally {
         Remove-SmokeTestDir $allTools
@@ -225,6 +229,7 @@ function Invoke-ShellInstallerSmokeTests {
             Assert-SmokeFile $autoAgents '.agents/plugins/boare-protocol-dev/rules/protocolo.md'
             Assert-SmokeFile $autoAgents '.agents/plugins/boare-protocol-dev/skills/protocolo/SKILL.md'
             Assert-SmokeFile $autoAgents '.boare/protocolo/CONDUZIR.md'
+            Assert-SmokeFile $autoAgents '.boare/protocolo/protocolo.json'
         } finally {
             Remove-SmokeTestDir $autoAgents
         }
@@ -236,6 +241,7 @@ function Invoke-ShellInstallerSmokeTests {
             try { & $shPath -c $shellInstallerRunner 'boare-smoke' $installer '--projeto' '--ferramenta' 'auto' | Out-Null } finally { Pop-Location }
             Assert-SmokeFile $autoVSCode '.github/copilot-instructions.md'
             Assert-SmokeFile $autoVSCode '.boare/protocolo/CONDUZIR.md'
+            Assert-SmokeFile $autoVSCode '.boare/protocolo/protocolo.json'
         } finally {
             Remove-SmokeTestDir $autoVSCode
         }
@@ -257,6 +263,7 @@ function Invoke-ShellInstallerSmokeTests {
             Assert-SmokeFile $allTools 'docs/CONTINUAR.md'
             Assert-SmokeFile $allTools 'AGENTS.md'
             Assert-SmokeFile $allTools '.boare/protocolo/CONDUZIR.md'
+            Assert-SmokeFile $allTools '.boare/protocolo/protocolo.json'
             Assert-SmokeFile $allTools '.boare/protocolo/templates/CONTINUAR.md'
         } finally {
             Remove-SmokeTestDir $allTools
@@ -374,12 +381,11 @@ Assert-TextContains 'README.md' 'agnóstico a modelo de IA, IDE e linguagem'
 Assert-TextContains 'README.md' 'Foi pensado para agentes'
 Assert-TextContains 'README.md' 'Exemplos técnicos são permitidos'
 Assert-TextContains 'README.md' '## Quick Start'
-Assert-TextContains 'README.md' 'Use o Boare Protocol Dev e conduza somente o Passo 1'
 Assert-TextContains 'README.md' '## Fluxo recomendado'
 Assert-TextContains 'README.md' '.boare/protocolo/'
-Assert-TextContains 'README.md' 'qualquer ferramenta que aceite texto colado'
-Assert-TextContains 'README.md' 'não depende de internet'
-Assert-TextContains 'README.md' 'Se preferir o prompt curto por URL'
+Assert-TextContains 'README.md' '## Versionamento do protocolo'
+Assert-TextContains 'README.md' '.boare/protocolo/protocolo.json'
+Assert-TextContains 'README.md' 'Atualização é uma ação explícita'
 Assert-TextContains 'README.md' 'Use o mecanismo nativo da ferramenta para ler URL'
 Assert-TextContains 'README.md' '### Codex sem espera'
 Assert-TextContains 'README.md' 'COMECE_AQUI.md'
@@ -409,6 +415,8 @@ Assert-TextDoesNotContain 'README.md' 'Comece em 30 segundos'
 Assert-TextDoesNotContain 'README.md' 'Testar caminho de deploy'
 Assert-TextDoesNotContain 'README.md' 'A URL aponta para `main` de propósito'
 Assert-TextDoesNotContain 'README.md' 'No GitHub, o botão de copiar aparece'
+Assert-TextDoesNotContain 'README.md' '## Quick Start sem instalar'
+Assert-TextDoesNotContain 'README.md' 'Perguntas obrigatórias:'
 
 $filesThatMustPointToRelease = @(
     'plugins\protocolo\commands\protocolo.md',
@@ -441,6 +449,7 @@ Assert-TextContains 'CONDUZIR.md' "https://raw.githubusercontent.com/pauloboare/
 Assert-TextContains 'CONDUZIR.md' $expectedCdnBaseUrl
 Assert-TextContains 'CONDUZIR.md' '## Estado e retomada'
 Assert-TextContains 'CONDUZIR.md' '.boare/protocolo/'
+Assert-TextContains 'CONDUZIR.md' 'Atualização de protocolo é ação'
 Assert-TextContains 'CONDUZIR.md' 'Arquivos do protocolo já presentes no workspace atual'
 Assert-TextContains 'CONDUZIR.md' 'nem tente'
 Assert-TextContains 'CONDUZIR.md' 'Se a ferramenta tiver permissão de agente'
@@ -460,6 +469,7 @@ Assert-TextContains 'passos\02b-adotar-existente.md' 'stack aparente, marcada co
 Assert-TextContains 'passos\02b-adotar-existente.md' 'próxima ação, perguntas abertas, riscos e última validação conhecida'
 Assert-TextContains 'templates\CONTINUAR.md' '## Como descobrir o passo atual'
 Assert-TextContains 'templates\CONTINUAR.md' '.boare/protocolo/CONDUZIR.md'
+Assert-TextContains 'templates\CONTINUAR.md' '.boare/protocolo/protocolo.json'
 Assert-TextContains 'templates\CONTINUAR.md' '## Regra de equipe'
 Assert-TextContains 'templates\CONTINUAR.md' '## Estado atual'
 Assert-TextContains 'templates\CONTINUAR.md' '## Perguntas abertas'
@@ -473,6 +483,7 @@ Assert-TextContains 'instalar.ps1' 'protocolo-status.md'
 Assert-TextContains 'instalar.ps1' 'protocolo-retomada.md'
 Assert-TextContains 'instalar.ps1' 'docs\CONTINUAR.md'
 Assert-TextContains 'instalar.ps1' '.boare/protocolo/CONDUZIR.md'
+Assert-TextContains 'instalar.ps1' 'update_policy'
 Assert-TextContains 'instalar.ps1' 'Se existir docs/CONTINUAR.md'
 Assert-TextContains 'instalar.ps1' '.claude\commands'
 Assert-TextContains 'instalar.ps1' '.cursor\commands'
@@ -493,6 +504,7 @@ Assert-TextContains 'instalar.sh' 'protocolo-status.md'
 Assert-TextContains 'instalar.sh' 'protocolo-retomada.md'
 Assert-TextContains 'instalar.sh' 'docs/CONTINUAR.md'
 Assert-TextContains 'instalar.sh' '.boare/protocolo/CONDUZIR.md'
+Assert-TextContains 'instalar.sh' 'update_policy'
 Assert-TextContains 'instalar.sh' 'Se existir docs/CONTINUAR.md'
 Assert-TextContains 'instalar.sh' '.claude/commands'
 Assert-TextContains 'instalar.sh' '.cursor/commands'

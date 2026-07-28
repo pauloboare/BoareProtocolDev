@@ -23,6 +23,7 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 PROJETO=0
 FERRAMENTA="auto"
 REFERENCIA="v1"
+PROTOCOL_VERSION="1.0.1"
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -351,6 +352,15 @@ copy_protocol_bundle() {
     cp -f "$SCRIPT_DIR"/passos/*.md "$BUNDLE_DESTINO/passos/"
     cp -f "$SCRIPT_DIR"/templates/*.md "$BUNDLE_DESTINO/templates/"
     cp -f "$SCRIPT_DIR"/skills/*.md "$BUNDLE_DESTINO/skills/"
+    cat > "$BUNDLE_DESTINO/protocolo.json" <<FIM
+{
+  "name": "boare-protocol-dev",
+  "version": "$PROTOCOL_VERSION",
+  "reference": "$REFERENCIA",
+  "update_policy": "manual",
+  "entrypoint": "CONDUZIR.md"
+}
+FIM
 }
 
 add_codex_agents_guidance() {

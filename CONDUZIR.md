@@ -32,6 +32,10 @@ contornar falha de rede com PowerShell, curl, Python ou ferramenta equivalente.
 agentes. Em projeto com equipe, esse arquivo deve ser versionado e enviado ao
 repositório junto com os demais artefatos do protocolo.
 
+Sessão normal usa a cópia local do protocolo. Não consulte GitHub para checar
+atualização nem pergunte se deve atualizar. Atualização de protocolo é ação
+explícita do usuário e deve virar commit próprio.
+
 Antes de conduzir qualquer passo:
 
 1. Se existir `docs/CONTINUAR.md`, leia primeiro e trate como ponto de partida.
