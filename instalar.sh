@@ -18,6 +18,8 @@
 
 set -e
 
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
 PROJETO=0
 FERRAMENTA="auto"
 REFERENCIA="v1"
@@ -52,6 +54,8 @@ PROTOCOL_GITHUB_URL="https://github.com/pauloboare/BoareProtocolDev/blob/$REFERE
 START_URL="https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$REFERENCIA/COMECE_AQUI.md"
 START_CDN_URL="https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$REFERENCIA/COMECE_AQUI.md"
 START_GITHUB_URL="https://github.com/pauloboare/BoareProtocolDev/blob/$REFERENCIA/COMECE_AQUI.md"
+LOCAL_PROTOCOL_PATH=".boare/protocolo/CONDUZIR.md"
+LOCAL_START_PATH=".boare/protocolo/COMECE_AQUI.md"
 
 write_commands_frontmatter() {
     COMMANDS_DESTINO="$1"
@@ -63,7 +67,7 @@ write_commands_frontmatter() {
 description: Continua o Boare Protocol Dev pelo estado atual do projeto
 ---
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -79,7 +83,7 @@ description: Inicia um projeto novo pelo Passo 1 do Boare Protocol Dev
 
 Antes de iniciar, confira se existe docs/CONTINUAR.md ou outros artefatos do protocolo em docs/. Se existir, não reinicie: leia docs/CONTINUAR.md ou conduza pelo estado atual com CONDUZIR.md.
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_START_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $START_URL
 2. $START_CDN_URL
 3. $START_GITHUB_URL
@@ -93,7 +97,7 @@ FIM
 description: Retoma um projeto que já usa o Boare Protocol Dev
 ---
 
-Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Compare com os artefatos reais em docs/. Se esse arquivo não existir, leia o primeiro link que conseguir acessar:
+Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Compare com os artefatos reais em docs/. Se esse arquivo não existir, leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -107,7 +111,7 @@ FIM
 description: Adota o Boare Protocol Dev em um sistema existente
 ---
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -121,7 +125,7 @@ FIM
 description: Diagnostica o estado do Boare Protocol Dev sem alterar arquivos
 ---
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -135,7 +139,7 @@ FIM
 description: Prepara a retomada do Boare Protocol Dev para a próxima sessão
 ---
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -152,7 +156,7 @@ write_commands_plain() {
     cat > "$COMMANDS_DESTINO/protocolo.md" <<FIM
 # Continua o Boare Protocol Dev pelo estado atual do projeto
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -166,7 +170,7 @@ cat > "$COMMANDS_DESTINO/protocolo-iniciar.md" <<FIM
 
 Antes de iniciar, confira se existe docs/CONTINUAR.md ou outros artefatos do protocolo em docs/. Se existir, não reinicie: leia docs/CONTINUAR.md ou conduza pelo estado atual com CONDUZIR.md.
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_START_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $START_URL
 2. $START_CDN_URL
 3. $START_GITHUB_URL
@@ -178,7 +182,7 @@ FIM
     cat > "$COMMANDS_DESTINO/protocolo-continuar.md" <<FIM
 # Retoma um projeto que já usa o Boare Protocol Dev
 
-Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Compare com os artefatos reais em docs/. Se esse arquivo não existir, leia o primeiro link que conseguir acessar:
+Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Compare com os artefatos reais em docs/. Se esse arquivo não existir, leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -190,7 +194,7 @@ FIM
     cat > "$COMMANDS_DESTINO/protocolo-adotar.md" <<FIM
 # Adota o Boare Protocol Dev em um sistema existente
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -202,7 +206,7 @@ FIM
     cat > "$COMMANDS_DESTINO/protocolo-status.md" <<FIM
 # Diagnostica o estado do Boare Protocol Dev sem alterar arquivos
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -214,7 +218,7 @@ FIM
     cat > "$COMMANDS_DESTINO/protocolo-retomada.md" <<FIM
 # Prepara a retomada do Boare Protocol Dev para a próxima sessão
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -243,6 +247,7 @@ Quando esta skill for usada, siga estas regras:
   1. $PROTOCOL_URL
   2. $PROTOCOL_CDN_URL
   3. $PROTOCOL_GITHUB_URL
+- Em instalação por projeto, leia primeiro \`$LOCAL_PROTOCOL_PATH\`.
 - Se existir \`docs/CONTINUAR.md\`, leia primeiro e retome por ele.
 - Se houver artefatos do protocolo em \`docs/\`, não reinicie pelo Passo 1.
 - Descubra o passo atual pelo que existe em \`docs/\`.
@@ -264,7 +269,7 @@ write_continuar() {
     cat > docs/CONTINUAR.md <<FIM
 # Continuar o protocolo
 
-Leia o primeiro link que conseguir acessar:
+Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que conseguir acessar:
 1. $PROTOCOL_URL
 2. $PROTOCOL_CDN_URL
 3. $PROTOCOL_GITHUB_URL
@@ -336,6 +341,18 @@ Continue pelo estado atual deste projeto.
 FIM
 }
 
+copy_protocol_bundle() {
+    if [ "$PROJETO" -ne 1 ]; then
+        return
+    fi
+    BUNDLE_DESTINO=".boare/protocolo"
+    mkdir -p "$BUNDLE_DESTINO/passos" "$BUNDLE_DESTINO/templates" "$BUNDLE_DESTINO/skills"
+    cp -f "$SCRIPT_DIR/COMECE_AQUI.md" "$SCRIPT_DIR/CONDUZIR.md" "$SCRIPT_DIR/PADROES.md" "$BUNDLE_DESTINO/"
+    cp -f "$SCRIPT_DIR"/passos/*.md "$BUNDLE_DESTINO/passos/"
+    cp -f "$SCRIPT_DIR"/templates/*.md "$BUNDLE_DESTINO/templates/"
+    cp -f "$SCRIPT_DIR"/skills/*.md "$BUNDLE_DESTINO/skills/"
+}
+
 add_codex_agents_guidance() {
     if [ "$PROJETO" -ne 1 ]; then
         return
@@ -349,7 +366,7 @@ add_codex_agents_guidance() {
         echo ""
         echo "Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo."
         echo "Para tarefas comuns sem pedido de protocolo, não aplique este fluxo."
-        echo "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Siga o passo atual pelo estado de docs/."
+        echo "Para conduzir o protocolo neste projeto, leia primeiro $LOCAL_PROTOCOL_PATH. Se não existir, use $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Siga o passo atual pelo estado de docs/."
         echo "Use docs/CONTINUAR.md como fonte de retomada entre sessões, máquinas e agentes."
         echo "Se docs/CONTINUAR.md existir, leia antes de qualquer início."
     } >> AGENTS.md
@@ -370,7 +387,7 @@ add_vscode_copilot_instructions() {
         echo ""
         echo "Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo."
         echo "Para tarefas comuns sem pedido de protocolo, não aplique este fluxo."
-        echo "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Siga o passo atual pelo estado de docs/."
+        echo "Para conduzir o protocolo neste projeto, leia primeiro $LOCAL_PROTOCOL_PATH. Se não existir, use $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Siga o passo atual pelo estado de docs/."
         echo "Use docs/CONTINUAR.md como fonte de retomada entre sessões, máquinas e agentes."
         echo "Se docs/CONTINUAR.md existir, leia antes de qualquer início."
         echo "Não avance mais de um passo sem pedido explícito."
@@ -393,7 +410,7 @@ Esta ferramenta não foi detectada pelo instalador automático ou usa um formato
 Peça para a IA da ferramenta executar esta tarefa:
 
 \`\`\`text
-Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia o primeiro link que conseguir acessar: $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Se existir docs/CONTINUAR.md, retome por ele e não reinicie pelo Passo 1. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev.
+Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia primeiro $LOCAL_PROTOCOL_PATH. Se não existir, use $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Se existir docs/CONTINUAR.md, retome por ele e não reinicie pelo Passo 1. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev.
 \`\`\`
 
 Depois, registre em docs/CONTINUAR.md qual caminho foi usado.
@@ -442,7 +459,7 @@ FIM
 
 Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.
 Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.
-Quando o usuário pedir para usar o protocolo, leia o primeiro link que conseguir acessar: $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Conduza o passo atual.
+Quando o usuário pedir para usar o protocolo, leia primeiro $LOCAL_PROTOCOL_PATH. Se não existir, use $PROTOCOL_URL, $PROTOCOL_CDN_URL ou $PROTOCOL_GITHUB_URL. Conduza o passo atual.
 Use docs/CONTINUAR.md para retomada entre sessões, máquinas e agentes. Se ele existir, leia antes de qualquer início e não avance mais de um passo sem pedido explícito.
 FIM
             ;;
@@ -484,6 +501,7 @@ resolve_auto_tools() {
 }
 
 write_continuar
+copy_protocol_bundle
 
 case "$FERRAMENTA" in
     auto)

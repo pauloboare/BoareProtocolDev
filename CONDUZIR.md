@@ -13,8 +13,8 @@ Bases públicas dos demais arquivos, em ordem de preferência:
 
 Use a primeira fonte disponível, nesta ordem:
 
-1. Arquivos do protocolo já presentes no workspace atual (`CONDUZIR.md`,
-   `passos/`, `templates/`, `skills/`, `PADROES.md`).
+1. Arquivos do protocolo já presentes no workspace atual (`.boare/protocolo/`,
+   ou `CONDUZIR.md`, `passos/`, `templates/`, `skills/`, `PADROES.md`).
 2. Arquivos pela web, tentando as bases públicas na ordem indicada acima.
 3. Conteúdo colado, anexado ou indicado pelo usuário.
 

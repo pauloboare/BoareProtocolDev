@@ -2,7 +2,7 @@
 description: Diagnostica o estado do Boare Protocol Dev sem alterar arquivos
 ---
 
-Leia o primeiro link que conseguir acessar e diagnostique o estado atual do protocolo neste projeto:
+Leia `.boare/protocolo/CONDUZIR.md` se existir. Se não existir, leia o primeiro link que conseguir acessar e diagnostique o estado atual do protocolo neste projeto:
 1. https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/CONDUZIR.md
 2. https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@v1/CONDUZIR.md
 3. https://github.com/pauloboare/BoareProtocolDev/blob/v1/CONDUZIR.md

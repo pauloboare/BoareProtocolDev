@@ -18,9 +18,84 @@ depois.
 Exemplos técnicos são permitidos quando ajudam a explicar. Eles devem aparecer
 como exemplo, não como stack obrigatória.
 
-## Quick Start
+## Fluxo recomendado
+
+No projeto onde o sistema será construído, instale o protocolo uma vez:
+
+```bash
+sh instalar.sh --projeto --ferramenta auto
+```
+
+```powershell
+.\instalar.ps1 -Projeto -Ferramenta auto
+```
+
+O instalador cria uma cópia versionável do protocolo em `.boare/protocolo/`,
+cria `docs/CONTINUAR.md` quando ele ainda não existe e adiciona o adaptador da
+ferramenta detectada.
+
+Depois disso, em qualquer IDE ou agente, peça:
+
+```text
+Use o Boare Protocol Dev deste projeto e conduza o passo atual.
+```
+
+A IA deve ler primeiro os arquivos locais do projeto:
+
+- `.boare/protocolo/CONDUZIR.md`
+- `docs/CONTINUAR.md`
+
+GitHub e CDN ficam apenas como fallback de instalação ou atualização. O uso
+normal do protocolo não depende de internet.
+
+## Quick Start sem instalar
 
 Abra a IA que você usa e cole:
+
+```text
+Use o Boare Protocol Dev e conduza somente o Passo 1.
+
+Antes de iniciar, confira se o projeto atual já tem docs/CONTINUAR.md ou
+artefatos do protocolo em docs/. Se tiver, não reinicie: leia docs/CONTINUAR.md
+e retome pelo estado atual.
+
+Se não houver estado anterior, faça uma pergunta por vez. Comece oferecendo a
+escolha: posso explicar a ideia do sistema com minhas próprias palavras, ou você
+pode fazer as oito perguntas uma a uma.
+
+Se eu explicar primeiro, extraia do texto o que já responde às oito perguntas,
+devolva numerado o que entendeu e pergunte só o que faltou, uma por vez. Não
+invente resposta. Lacuna vira pergunta.
+
+Se eu preferir as perguntas, faça uma por vez. Depois de cada resposta, repita
+em uma linha o que entendeu e confirme. Resposta vaga pede caso concreto.
+
+Não proponha solução técnica no Passo 1. Nada de banco, framework ou tela.
+Não amplie escopo. Segurança e LGPD valem sempre.
+
+Perguntas obrigatórias:
+1. Que problema o sistema resolve? Uma frase.
+2. Quem usa? Liste os papéis.
+3. O que a pessoa consegue fazer no sistema que hoje não consegue?
+4. Qual é a única funcionalidade que, se faltar, o sistema não serve para nada?
+5. O que explicitamente não faz parte? No mínimo três itens.
+6. Qual é o canal de uso? Web, mobile, desktop, linha de comando, API,
+   automação, biblioteca ou integração.
+7. Quantos usuários ao mesmo tempo? Ordem de grandeza basta.
+8. Lida com dado pessoal? Qual exatamente?
+
+No fim, apresente as oito respostas juntas e numeradas, sem criar arquivo, e
+peça confirmação. Pare no fim do Passo 1. Só avance quando eu mandar.
+```
+
+Pronto. A IA vai fazer uma pergunta por vez e conduzir o Passo 1.
+
+Esse modo funciona em Codex, Cursor, Claude Code, ChatGPT, Claude, Gemini e
+qualquer ferramenta que aceite texto colado. Ele não depende de internet,
+GitHub, plugin ou leitura de URL, mas é só a porta de entrada. Para continuar em
+equipe, instale o protocolo localmente no projeto.
+
+Se preferir o prompt curto por URL, cole:
 
 ```text
 Leia o primeiro link que conseguir acessar e conduza o Passo 1 do Boare Protocol Dev:
@@ -32,11 +107,6 @@ Use o mecanismo nativo da ferramenta para ler URL. Não use terminal, shell,
 PowerShell, curl ou Python só para baixar esses arquivos. Se os três links
 falharem, diga isso e peça orientação.
 ```
-
-Pronto. A IA vai fazer uma pergunta por vez e conduzir o restante.
-
-Esse modo funciona em Codex, Cursor, Claude Code, ChatGPT, Claude, Gemini e
-qualquer ferramenta capaz de ler uma URL pública.
 
 Se o projeto já tiver `docs/CONTINUAR.md` ou outros artefatos em `docs/`, não
 use o Quick Start para reiniciar. Peça para a IA ler `docs/CONTINUAR.md` e
@@ -62,9 +132,8 @@ CDN, cache do navegador interno ou TLS do Windows para começar.
 
 ## Instalação
 
-Você não precisa instalar nada para usar o protocolo. A instalação só cria
-adaptadores locais quando a ferramenta suporta comandos, skills, regras ou
-instruções persistentes.
+Você não precisa instalar nada para testar o Passo 1. Para usar o protocolo em
+projeto real, a instalação local é o caminho recomendado.
 
 Uso recomendado dentro de um projeto:
 
@@ -78,7 +147,8 @@ sh instalar.sh --projeto --ferramenta auto
 
 O modo `auto` procura sinais da ferramenta no projeto. Se não conseguir
 detectar, cria `docs/INSTALAR_PROTOCOLO.md` com a instrução para a própria IA da
-ferramenta instalar no formato correto.
+ferramenta instalar no formato correto. Em todos os casos de instalação por
+projeto, também cria `.boare/protocolo/` com a cópia local do protocolo.
 
 Para instalar todos os adaptadores de projeto:
 
@@ -102,6 +172,8 @@ sh instalar.sh --projeto --ferramenta todas
 | Antigravity | `.agents/plugins/boare-protocol-dev` |
 | Codex | `.codex/skills/protocolo` e orientação em `AGENTS.md` |
 | Outra ferramenta | `docs/INSTALAR_PROTOCOLO.md` para instalação assistida |
+
+Toda instalação por projeto também cria `.boare/protocolo/`.
 
 Quando a ferramenta suporta comandos, use `/protocolo`. Quando ela trabalha por
 skills, regras ou instruções persistentes, peça para usar o Boare Protocol Dev e

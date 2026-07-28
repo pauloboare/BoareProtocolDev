@@ -32,8 +32,10 @@ $protocolGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Refer
 $startUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/COMECE_AQUI.md"
 $startCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/COMECE_AQUI.md"
 $startGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Referencia/COMECE_AQUI.md"
-$basePrompt = "Leia o primeiro link que conseguir acessar:`n1. $protocolUrl`n2. $protocolCdnUrl`n3. $protocolGitHubUrl"
-$startPrompt = "Leia o primeiro link que conseguir acessar:`n1. $startUrl`n2. $startCdnUrl`n3. $startGitHubUrl"
+$localProtocolPath = '.boare/protocolo/CONDUZIR.md'
+$localStartPath = '.boare/protocolo/COMECE_AQUI.md'
+$basePrompt = "Leia $localProtocolPath se existir. Se não existir, leia o primeiro link que conseguir acessar:`n1. $protocolUrl`n2. $protocolCdnUrl`n3. $protocolGitHubUrl"
+$startPrompt = "Leia $localStartPath se existir. Se não existir, leia o primeiro link que conseguir acessar:`n1. $startUrl`n2. $startCdnUrl`n3. $startGitHubUrl"
 
 $commands = @(
     @{
@@ -140,6 +142,24 @@ function New-ProtocolContinueContent {
     )
 }
 
+function Copy-ProtocolBundle {
+    if (-not $Projeto) { return }
+
+    $bundleDestino = '.boare\protocolo'
+    New-Item -ItemType Directory -Force -Path $bundleDestino | Out-Null
+
+    foreach ($file in @('COMECE_AQUI.md', 'CONDUZIR.md', 'PADROES.md')) {
+        Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination (Join-Path $bundleDestino $file) -Force
+    }
+
+    foreach ($dir in @('passos', 'templates', 'skills')) {
+        $sourceDir = Join-Path $PSScriptRoot $dir
+        $destDir = Join-Path $bundleDestino $dir
+        New-Item -ItemType Directory -Force -Path $destDir | Out-Null
+        Copy-Item -Path (Join-Path $sourceDir '*') -Destination $destDir -Recurse -Force
+    }
+}
+
 function Write-CommandFiles {
     param(
         [string]$Destino,
@@ -199,6 +219,7 @@ function Write-ProtocolSkill {
         "  1. $protocolUrl"
         "  2. $protocolCdnUrl"
         "  3. $protocolGitHubUrl"
+        '- Em instalação por projeto, leia primeiro `.boare/protocolo/CONDUZIR.md`.'
         '- Se existir `docs/CONTINUAR.md`, leia primeiro e retome por ele.'
         '- Se houver artefatos do protocolo em `docs/`, não reinicie pelo Passo 1.'
         '- Descubra o passo atual pelo que existe em `docs/`.'
@@ -218,7 +239,7 @@ function Add-CodexAgentsGuidance {
         ''
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
-        "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
+        "Para conduzir o protocolo neste projeto, leia primeiro $localProtocolPath. Se não existir, use $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
         'Use docs/CONTINUAR.md como fonte de retomada entre sessões, máquinas e agentes.'
         'Se docs/CONTINUAR.md existir, leia antes de qualquer início.'
     )
@@ -245,7 +266,7 @@ function Add-VSCodeCopilotInstructions {
         ''
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
-        "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
+        "Para conduzir o protocolo neste projeto, leia primeiro $localProtocolPath. Se não existir, use $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
         'Use docs/CONTINUAR.md como fonte de retomada entre sessões, máquinas e agentes.'
         'Se docs/CONTINUAR.md existir, leia antes de qualquer início.'
         'Não avance mais de um passo sem pedido explícito.'
@@ -274,7 +295,7 @@ function Write-AssistedInstall {
         'Peça para a IA da ferramenta executar esta tarefa:'
         ''
         '```text'
-        "Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Se existir docs/CONTINUAR.md, retome por ele e não reinicie pelo Passo 1. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev."
+        "Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia primeiro $localProtocolPath. Se não existir, use $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Se existir docs/CONTINUAR.md, retome por ele e não reinicie pelo Passo 1. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev."
         '```'
         ''
         'Depois, registre em docs/CONTINUAR.md qual caminho foi usado.'
@@ -335,7 +356,7 @@ function Install-Antigravity {
         ''
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
-        "Quando o usuário pedir para usar o protocolo, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Conduza o passo atual."
+        "Quando o usuário pedir para usar o protocolo, leia primeiro $localProtocolPath. Se não existir, use $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Conduza o passo atual."
         'Use docs/CONTINUAR.md para retomada entre sessões, máquinas e agentes. Se ele existir, leia antes de qualquer início e não avance mais de um passo sem pedido explícito.'
     ) -Encoding utf8
     return $destino
@@ -399,6 +420,7 @@ function Resolve-AutoTools {
 
 if ($Projeto) {
     New-Item -ItemType Directory -Force -Path 'docs' | Out-Null
+    Copy-ProtocolBundle
     $continuarPath = 'docs\CONTINUAR.md'
     if (-not (Test-Path -LiteralPath $continuarPath)) {
         Set-Content -Path $continuarPath -Value (New-ProtocolContinueContent) -Encoding utf8
