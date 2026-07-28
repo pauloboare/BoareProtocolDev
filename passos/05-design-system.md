@@ -36,6 +36,9 @@ o que cada uma serve melhor. O usuário escolhe.
 Depois preencha `templates/DESIGN.md`. Em modo agente, crie ou atualize
 `docs/DESIGN.md`. Em modo assistido, apresente o conteúdo para o usuário salvar.
 
+Ao fechar o passo, atualize `docs/CONTINUAR.md` com o Passo 5 concluído e o
+Passo 6 como próximo passo recomendado.
+
 Defina o mínimo, não o máximo:
 
 - Paleta com função declarada: ação principal, perigo, sucesso, aviso, neutro.
@@ -63,6 +66,7 @@ Avise na hora, mesmo fora do assunto deste passo.
 - [ ] Os estados de vazio, carregando e erro estão definidos
 - [ ] Os dispositivos-alvo estão nomeados
 - [ ] Nada aqui contradiz uma decisão do Passo 4
+- [ ] `docs/CONTINUAR.md` aponta o Passo 6 como próxima ação
 
 ## Commit
 
@@ -70,8 +74,7 @@ Comandos sugeridos:
 
 ```bash
 git status
-git add docs/DESIGN.md
+git add docs/DESIGN.md docs/CONTINUAR.md
 git diff --staged
 git commit -m "docs(prep): define design system"
 ```
-

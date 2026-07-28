@@ -11,6 +11,19 @@ Leia o Boare Protocol Dev e conduza o Passo 1.
 O objetivo e evitar que uma falha ao buscar outro arquivo do GitHub interrompa
 o primeiro uso. Para continuar depois do Passo 1, leia `CONDUZIR.md`.
 
+## Antes de iniciar
+
+Confira se o projeto atual ja usa o protocolo antes de conduzir o Passo 1.
+
+Se existir `docs/CONTINUAR.md`, leia esse arquivo e siga a proxima acao
+recomendada. Se ele nao existir, mas `docs/` tiver `PRD.md`,
+`DECISOES_TECNICAS.md`, `DESIGN.md`, `FSD.md` ou `BUGS.md`, nao reinicie o
+protocolo: leia `CONDUZIR.md`, descubra o passo atual pelos artefatos e avise
+que o projeto sera retomado.
+
+Use o Passo 1 so quando nao houver estado de protocolo no projeto, ou quando o
+usuario pedir explicitamente para comecar outro produto do zero.
+
 ## Fontes publicas
 
 Se uma URL falhar, tente a proxima antes de declarar bloqueio:

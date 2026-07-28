@@ -10,8 +10,8 @@ Implementar uma funcionalidade com teste, sem sair do que o FSD especificou.
 
 ## Sai
 - Código e testes de **uma** funcionalidade, commitados juntos.
-- Quando não houver próximo item no FSD: fechamento do ciclo registrado em
-  `docs/CONTINUAR.md`.
+- `docs/CONTINUAR.md` atualizado com o próximo item do FSD, ou com o fechamento
+  do ciclo quando não houver item pendente.
 
 ## Perguntas obrigatórias
 
@@ -55,6 +55,10 @@ Regras:
   `.env` enquanto trabalha. Se a ferramenta que codifica com você tiver
   controle de acesso a arquivo, restrinja ao projeto e mascare segredos.
 
+Depois de cada funcionalidade, atualize `docs/CONTINUAR.md` antes do commit:
+marque o item concluído, indique o próximo item do FSD, registre testes rodados
+e mantenha bugs, riscos e perguntas abertas visíveis para outro computador.
+
 ## Modo refatoração - código que já existe
 
 Veio do Passo 2b. A ordem inverte, porque aqui o comportamento já está de pé e
@@ -88,6 +92,7 @@ Avise na hora.
 - [ ] Nenhum segredo entrou no código
 - [ ] Em modo refatoração: a rede ficou verde antes de mexer e seguiu verde depois
 - [ ] Os não-negociáveis do `PADROES.md` estão respeitados
+- [ ] `docs/CONTINUAR.md` registra o próximo item do FSD ou o fechamento do ciclo
 
 ## Commit
 
@@ -95,7 +100,7 @@ Comandos sugeridos:
 
 ```bash
 git status
-git add <arquivos-da-funcionalidade> <arquivos-de-teste> docs/BUGS.md
+git add <arquivos-da-funcionalidade> <arquivos-de-teste> docs/BUGS.md docs/CONTINUAR.md
 git diff --staged
 git commit -m "feat(<escopo>): <o que passou a funcionar>"
 ```

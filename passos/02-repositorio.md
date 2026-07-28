@@ -57,6 +57,8 @@ Sequência:
    ferramenta usada tiver um arquivo-gatilho próprio na raiz do projeto,
    acrescente nele uma linha curta: "Leia `docs/CONTINUAR.md` e siga."
    Isso é adaptação de IDE/agente, não regra do protocolo.
+   Preencha o estado inicial com o Passo 2 como passo atual e o Passo 3 como
+   próxima ação, ou com a decisão de manter só local quando for o caso.
 7. Primeiro commit. Depois, se a resposta 5 pediu remoto, criar o repositório
    remoto e enviar. Se não pediu, registrar que o projeto está só local por
    enquanto em `docs/CONTINUAR.md`.
@@ -74,6 +76,7 @@ Convenção de mensagem de commit: seção "Commits" do `PADROES.md`.
 - [ ] Repositório local existe, com ramo principal `main`
 - [ ] Repositório remoto existe e recebeu o primeiro push, ou a decisão de manter só local está registrada em `docs/CONTINUAR.md`
 - [ ] `docs/`, `docs/BUGS.md` e `docs/CONTINUAR.md` existem
+- [ ] `docs/CONTINUAR.md` tem próxima ação real, não só campos do template
 - [ ] Se houver arquivo-gatilho da ferramenta usada, ele aponta para `docs/CONTINUAR.md`
 - [ ] `.gitignore` cobre segredos, dumps de banco, logs e arquivos enviados
 - [ ] O exemplo do arquivo de ambiente está versionado, sem valor real

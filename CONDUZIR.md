@@ -25,9 +25,29 @@ próxima antes de declarar bloqueio. Se o arquivo também não existir localment
 informe o bloqueio ao usuário e peça orientação. Não use terminal, shell ou
 comando de sistema só para baixar os arquivos deste protocolo.
 
+## Estado e retomada
+
+`docs/CONTINUAR.md` é a fonte canônica de retomada entre sessões, máquinas e
+agentes. Em projeto com equipe, esse arquivo deve ser versionado e enviado ao
+repositório junto com os demais artefatos do protocolo.
+
+Antes de conduzir qualquer passo:
+
+1. Se existir `docs/CONTINUAR.md`, leia primeiro e trate como ponto de partida.
+2. Compare o que ele diz com os artefatos reais em `docs/`.
+3. Se o arquivo estiver ausente ou desatualizado, reconstrua o estado pelos
+   artefatos e atualize `docs/CONTINUAR.md` antes de avançar.
+4. Se alguém chamou um comando de início dentro de projeto com `docs/` do
+   protocolo, não reinicie: explique que o projeto já tem estado e retome.
+
+Ao encerrar um passo, interromper uma sessão ou deixar trabalho pendente,
+atualize `docs/CONTINUAR.md` com o último passo concluído, o passo atual, a
+próxima ação, os arquivos que a próxima sessão deve ler, perguntas abertas,
+riscos ativos e a última validação conhecida.
+
 ## Como conduzir
 
-1. Descubra o passo atual pelo que já existe em `docs/` do projeto.
+1. Descubra o passo atual por `docs/CONTINUAR.md` e pelos artefatos em `docs/`.
 2. Busque o arquivo do passo atual. Se ele citar `templates/`, `skills/` ou
    `PADROES.md`, busque também **apenas** esses recursos citados na mesma base.
 3. Faça **uma pergunta por vez**. Espere a resposta antes da próxima.
@@ -38,7 +58,9 @@ comando de sistema só para baixar os arquivos deste protocolo.
    ferramenta permitir. Para publicar, criar remoto, instalar dependência, usar
    credencial, apagar arquivo, reescrever histórico ou alterar algo fora do
    projeto, peça confirmação explícita.
-6. No fim, verifique o portão de saída item por item e mostre o resultado.
+6. No fim, verifique o portão de saída item por item, atualize
+   `docs/CONTINUAR.md` quando ele existir ou o passo pedir, e mostre o
+   resultado.
 7. **Pare.** Só avance quando o usuário mandar. Nunca dois passos na mesma resposta.
 8. Usuário não soube responder? Ofereça 2 ou 3 opções com o trade-off de cada
    uma, e deixe ele escolher.

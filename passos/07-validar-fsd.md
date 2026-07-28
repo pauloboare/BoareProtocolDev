@@ -56,6 +56,10 @@ que alimenta o próximo passo.
 
 Este é o passo que mais reduz retrabalho e o mais tentador de pular. Não pule.
 
+Ao fechar o passo, atualize `docs/CONTINUAR.md` com o Passo 7 concluído, o
+Passo 8 como próximo passo recomendado, as divergências corrigidas e a última
+validação conhecida.
+
 ## Portão de saída
 
 - [ ] Toda `RN` do PRD tem localização apontada no FSD
@@ -66,6 +70,7 @@ Este é o passo que mais reduz retrabalho e o mais tentador de pular. Não pule.
 - [ ] A ordem de implementação não tem dependência circular
 - [ ] Todo dado pessoal aparece protegido, e nenhum vaza em entrada pública
 - [ ] Toda divergência achada foi corrigida na origem
+- [ ] `docs/CONTINUAR.md` aponta o Passo 8 como próxima ação
 
 ## Commit
 
@@ -73,8 +78,7 @@ Comandos sugeridos:
 
 ```bash
 git status
-git add docs/PRD.md docs/DECISOES_TECNICAS.md docs/DESIGN.md docs/FSD.md
+git add docs/PRD.md docs/DECISOES_TECNICAS.md docs/DESIGN.md docs/FSD.md docs/CONTINUAR.md
 git diff --staged
 git commit -m "docs(prep): valida FSD e corrige divergências"
 ```
-

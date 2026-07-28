@@ -26,6 +26,10 @@ Preencha `templates/FSD.md`. Em modo agente, crie ou atualize `docs/FSD.md`.
 Em modo assistido, apresente o conteúdo para o usuário salvar. Não escreva o
 código da funcionalidade neste passo.
 
+Ao fechar o passo, atualize `docs/CONTINUAR.md` com o Passo 6 concluído, o
+Passo 7 como próximo passo recomendado e a primeira leitura obrigatória da
+próxima sessão.
+
 O FSD tem seis partes:
 
 1. **Inventário** - cada arquivo a criar ou alterar, com a responsabilidade dele
@@ -66,6 +70,7 @@ Avise na hora, mesmo fora do assunto deste passo.
 - [ ] Toda tela que carrega dado tem estados de vazio, carregando e erro
 - [ ] O plano de testes nomeia casos de borda, não só o caminho feliz
 - [ ] A ordem de implementação não tem dependência circular
+- [ ] `docs/CONTINUAR.md` aponta o Passo 7 como próxima ação
 
 ## Commit
 
@@ -73,8 +78,7 @@ Comandos sugeridos:
 
 ```bash
 git status
-git add docs/FSD.md
+git add docs/FSD.md docs/CONTINUAR.md
 git diff --staged
 git commit -m "docs(prep): adiciona FSD"
 ```
-

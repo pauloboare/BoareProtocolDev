@@ -61,6 +61,9 @@ usuário salvar. Formato de cada decisão:
 **Revisar se:** condição concreta que invalidaria esta escolha
 ```
 
+Ao fechar o passo, atualize `docs/CONTINUAR.md` com o Passo 4 concluído, se o
+Passo 5 se aplica ou deve ser pulado, e o caminho de entrega escolhido em D5.
+
 A linha **Revisar se** impede a decisão de ser rediscutida do zero na próxima
 sessão. Escreva condição verificável: "se passar de 500 usuários ao mesmo tempo",
 não "se crescer muito".
@@ -92,6 +95,7 @@ do assunto deste passo.
 - [ ] D4 nomeia o ponto único onde sessão e cabeçalhos são aplicados
 - [ ] O `.gitignore` ganhou o bloco das tecnologias escolhidas
 - [ ] Havendo dado pessoal no PRD, D7 declara finalidade e base legal de cada um
+- [ ] `docs/CONTINUAR.md` registra a próxima ação com base em haver ou não interface visual
 
 ## Commit
 
@@ -99,8 +103,7 @@ Comandos sugeridos:
 
 ```bash
 git status
-git add docs/DECISOES_TECNICAS.md .gitignore
+git add docs/DECISOES_TECNICAS.md docs/CONTINUAR.md .gitignore
 git diff --staged
 git commit -m "docs(prep): registra decisões técnicas"
 ```
-

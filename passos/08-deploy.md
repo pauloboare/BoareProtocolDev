@@ -52,6 +52,10 @@ Regras que vêm de falha real:
 Comece pelo caminho mais simples que entrega ou executa. Etapa de teste e
 verificação entram depois, quando existir o que testar.
 
+Ao fechar o passo, atualize `docs/CONTINUAR.md` com o Passo 8 concluído, o
+Passo 9 como próximo passo recomendado, o comando de entrega validado e o item
+do FSD que deve ser implementado primeiro.
+
 ## Portão de saída
 
 - [ ] O caminho de entrega rodou com sucesso pelo menos uma vez
@@ -60,6 +64,7 @@ verificação entram depois, quando existir o que testar.
 - [ ] Toda etapa da automação chama comando que existe no projeto
 - [ ] A entrega dispara só a partir do ramo, tag, versão ou artefato definido
 - [ ] O caminho de volta à versão anterior está escrito e foi testado
+- [ ] `docs/CONTINUAR.md` aponta o Passo 9 e o primeiro item do FSD
 
 ## Commit
 
@@ -67,11 +72,10 @@ Comandos sugeridos:
 
 ```bash
 git status
-git add <arquivos-da-entrega>
+git add <arquivos-da-entrega> docs/CONTINUAR.md
 git diff --staged
 git commit -m "chore(entrega): configura caminho de entrega"
 ```
 
 Fechado este passo, a preparação acabou. Siga para o Passo 9, que repete uma
 funcionalidade por vez até o FSD acabar.
-

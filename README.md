@@ -34,6 +34,10 @@ Pronto. A IA vai fazer uma pergunta por vez e conduzir o restante.
 Esse modo funciona em Codex, Cursor, Claude Code, ChatGPT, Claude, Gemini e
 qualquer ferramenta capaz de ler uma URL pública.
 
+Se o projeto já tiver `docs/CONTINUAR.md` ou outros artefatos em `docs/`, não
+use o Quick Start para reiniciar. Peça para a IA ler `docs/CONTINUAR.md` e
+continuar pelo estado atual do repositório.
+
 ## Instalação
 
 Você não precisa instalar nada para usar o protocolo. A instalação só cria
@@ -115,6 +119,9 @@ Projeto novo:
 ```text
 /protocolo-iniciar
 ```
+
+Se esse comando for chamado em um clone que já tem `docs/CONTINUAR.md`, o
+adaptador deve ignorar o início e retomar pelo estado versionado.
 
 Continuar projeto que já usa o protocolo:
 
@@ -307,7 +314,10 @@ Para congelar totalmente um projeto, use uma tag fixa, por exemplo `v1.0.0`,
 no comando ou instalador.
 
 Em projetos de equipe, a recomendação prática é versionar `docs/CONTINUAR.md`
-e registrar nele se o projeto segue `v1`, `main` ou uma tag fixa.
+e registrar nele se o projeto segue `v1`, `main` ou uma tag fixa. Antes de
+outra pessoa começar em outro computador, envie esse arquivo junto com os
+artefatos do passo concluído. Ao terminar uma sessão, rode `/protocolo-retomada`
+para deixar o próximo item escrito no repositório.
 
 ## Se você já tem um sistema pronto
 

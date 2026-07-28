@@ -33,6 +33,9 @@ Preencha o template `templates/DESIGN.md` com o que foi respondido. Em modo
 agente, crie ou atualize `docs/DESIGN.md`. Em modo assistido, apresente o
 conteúdo pronto para o usuário salvar.
 
+Ao fechar o passo, atualize `docs/CONTINUAR.md` com o Passo 1b concluído, o
+próximo passo recomendado e qualquer lacuna de design que o FSD deverá cobrar.
+
 Lacuna encontrada não é problema, é achado. Estado de erro que ninguém desenhou,
 componente que falta: registre como lacuna, com nome. Lacuna escrita é lacuna que
 o FSD vai cobrar no Passo 6.
@@ -53,12 +56,17 @@ Avise na hora, mesmo fora do assunto deste passo.
 - [ ] A origem da referência está registrada, com a situação da licença
 - [ ] Os dispositivos-alvo estão nomeados
 - [ ] As lacunas estão listadas como lacunas, não omitidas
+- [ ] `docs/CONTINUAR.md` aponta o próximo passo e os arquivos que devem ser lidos
 
 ## Commit
 
 Mostre ao usuário para ele rodar:
 
-`git add docs/DESIGN.md && git commit -m "docs(prep): registra design existente"`
+```bash
+git status
+git add docs/DESIGN.md docs/CONTINUAR.md
+git diff --staged
+git commit -m "docs(prep): registra design existente"
+```
 
 Se o repositório ainda não existe, faça o Passo 2 antes e commite depois.
-

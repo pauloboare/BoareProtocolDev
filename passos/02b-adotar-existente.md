@@ -126,6 +126,11 @@ do assunto deste passo.
 
 ## Commit
 
-Para o usuário rodar:
-`git add -A && git commit -m "chore: adota protocolo no sistema existente"`
+Comandos sugeridos:
 
+```bash
+git status
+git add .gitignore docs/BUGS.md docs/CONTINUAR.md <arquivos-gatilho-alterados>
+git diff --staged
+git commit -m "chore: adota protocolo no sistema existente"
+```

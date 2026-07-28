@@ -8,6 +8,16 @@ Leia o primeiro link que conseguir acessar:
 
 Continue pelo estado atual deste projeto.
 
+## Regra de equipe
+
+- Este arquivo deve ser versionado no repositório do sistema.
+- Antes de trabalhar em outro computador, atualize o repositório local e leia
+  este arquivo.
+- Ao encerrar uma sessão ou concluir um passo, rode `/protocolo-retomada` ou
+  atualize este arquivo manualmente.
+- Se alguém chamar `/protocolo-iniciar` em um clone que já tem este arquivo,
+  ignore o início e retome daqui.
+
 ## Modo
 
 <normal / refatoração>

@@ -27,6 +27,10 @@ Uma pergunta por vez. Depois preencha `templates/PRD.md`. Em modo agente, crie
 ou atualize `docs/PRD.md`. Em modo assistido, apresente o conteúdo para o
 usuário salvar.
 
+Ao fechar o passo, atualize `docs/CONTINUAR.md` com o Passo 3 concluído, o
+Passo 4 como próximo passo recomendado e qualquer pergunta que tenha ficado em
+aberto.
+
 Ao escrever:
 
 - Numere as regras de negócio como `RN01`, `RN02`... Uma regra por número.
@@ -56,6 +60,7 @@ Avise na hora, mesmo fora do assunto deste passo.
 - [ ] A seção de fora de escopo tem no mínimo três itens
 - [ ] A seção de dados pessoais nomeia os dados, ou declara que não há nenhum
 - [ ] Nenhuma tecnologia específica é citada
+- [ ] `docs/CONTINUAR.md` aponta o Passo 4 como próxima ação
 
 ## Commit
 
@@ -63,8 +68,7 @@ Comandos sugeridos:
 
 ```bash
 git status
-git add docs/PRD.md
+git add docs/PRD.md docs/CONTINUAR.md
 git diff --staged
 git commit -m "docs(prep): adiciona PRD"
 ```
-

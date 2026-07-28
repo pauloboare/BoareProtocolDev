@@ -44,12 +44,12 @@ $commands = @(
     @{
         File = 'protocolo-iniciar.md'
         Description = 'Inicia um projeto novo pelo Passo 1 do Boare Protocol Dev'
-        Prompt = "$startPrompt`nConduza o Passo 1."
+        Prompt = "Antes de iniciar, confira se existe docs/CONTINUAR.md ou outros artefatos do protocolo em docs/. Se existir, não reinicie: leia docs/CONTINUAR.md ou conduza pelo estado atual com CONDUZIR.md.`n`n$startPrompt`nConduza o Passo 1."
     },
     @{
         File = 'protocolo-continuar.md'
         Description = 'Retoma um projeto que já usa o Boare Protocol Dev'
-        Prompt = "Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Se esse arquivo não existir:`n$basePrompt`nDescubra o passo atual pelo que existe em docs/."
+        Prompt = "Leia docs/CONTINUAR.md e siga a próxima ação recomendada. Compare com os artefatos reais em docs/. Se esse arquivo não existir:`n$basePrompt`nDescubra o passo atual pelo que existe em docs/ e crie docs/CONTINUAR.md antes de avançar."
     },
     @{
         File = 'protocolo-adotar.md'
@@ -64,7 +64,7 @@ $commands = @(
     @{
         File = 'protocolo-retomada.md'
         Description = 'Prepara a retomada do Boare Protocol Dev para a próxima sessão'
-        Prompt = "$basePrompt`nAtualize docs/CONTINUAR.md com o estado real deste projeto. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida."
+        Prompt = "$basePrompt`nAtualize docs/CONTINUAR.md com o estado real deste projeto para outro computador ou agente continuar sem reiniciar. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida."
     }
 )
 
@@ -74,6 +74,13 @@ function New-ProtocolContinueContent {
         ''
         $basePrompt
         'Continue pelo estado atual deste projeto.'
+        ''
+        '## Regra de equipe'
+        ''
+        '- Este arquivo deve ser versionado no repositório do sistema.'
+        '- Antes de trabalhar em outro computador, atualize o repositório local e leia este arquivo.'
+        '- Ao encerrar uma sessão ou concluir um passo, rode `/protocolo-retomada` ou atualize este arquivo manualmente.'
+        '- Se alguém chamar `/protocolo-iniciar` em um clone que já tem este arquivo, ignore o início e retome daqui.'
         ''
         '## Modo'
         ''
@@ -192,11 +199,13 @@ function Write-ProtocolSkill {
         "  1. $protocolUrl"
         "  2. $protocolCdnUrl"
         "  3. $protocolGitHubUrl"
+        '- Se existir `docs/CONTINUAR.md`, leia primeiro e retome por ele.'
+        '- Se houver artefatos do protocolo em `docs/`, não reinicie pelo Passo 1.'
         '- Descubra o passo atual pelo que existe em `docs/`.'
         '- Faça uma pergunta por vez.'
         '- Edite arquivos somente dentro do projeto quando a ferramenta permitir.'
         '- Não publique, instale dependências, apague arquivos, use credenciais ou altere histórico sem confirmação explícita.'
-        '- No fim, verifique o portão de saída e pare.'
+        '- No fim, verifique o portão de saída, atualize `docs/CONTINUAR.md` e pare.'
     )
     Set-Content -Path $skillPath -Value $content -Encoding utf8
 }
@@ -210,7 +219,8 @@ function Add-CodexAgentsGuidance {
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
         "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
-        'Use docs/CONTINUAR.md como fonte de retomada entre sessões.'
+        'Use docs/CONTINUAR.md como fonte de retomada entre sessões, máquinas e agentes.'
+        'Se docs/CONTINUAR.md existir, leia antes de qualquer início.'
     )
 
     if (Test-Path -LiteralPath $path) {
@@ -236,7 +246,8 @@ function Add-VSCodeCopilotInstructions {
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
         "Para conduzir o protocolo neste projeto, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Siga o passo atual pelo estado de docs/."
-        'Use docs/CONTINUAR.md como fonte de retomada entre sessões.'
+        'Use docs/CONTINUAR.md como fonte de retomada entre sessões, máquinas e agentes.'
+        'Se docs/CONTINUAR.md existir, leia antes de qualquer início.'
         'Não avance mais de um passo sem pedido explícito.'
     )
 
@@ -263,7 +274,7 @@ function Write-AssistedInstall {
         'Peça para a IA da ferramenta executar esta tarefa:'
         ''
         '```text'
-        "Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev."
+        "Crie o atalho, skill, regra ou instrução persistente equivalente a /protocolo nesta ferramenta. Esse adaptador deve disponibilizar o Boare Protocol Dev, não obrigar seu uso em toda tarefa. O conteúdo deve dizer: use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo. Para conduzir, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Se existir docs/CONTINUAR.md, retome por ele e não reinicie pelo Passo 1. Se a ferramenta suportar comandos, crie também protocolo-iniciar, protocolo-continuar, protocolo-adotar, protocolo-status e protocolo-retomada com os prompts do Boare Protocol Dev."
         '```'
         ''
         'Depois, registre em docs/CONTINUAR.md qual caminho foi usado.'
@@ -325,7 +336,7 @@ function Install-Antigravity {
         'Use o Boare Protocol Dev somente quando o usuário pedir o protocolo, uma etapa do protocolo ou um comando do protocolo.'
         'Para tarefas comuns sem pedido de protocolo, não aplique este fluxo.'
         "Quando o usuário pedir para usar o protocolo, leia o primeiro link que conseguir acessar: $protocolUrl, $protocolCdnUrl ou $protocolGitHubUrl. Conduza o passo atual."
-        'Use docs/CONTINUAR.md para retomada e não avance mais de um passo sem pedido explícito.'
+        'Use docs/CONTINUAR.md para retomada entre sessões, máquinas e agentes. Se ele existir, leia antes de qualquer início e não avance mais de um passo sem pedido explícito.'
     ) -Encoding utf8
     return $destino
 }
