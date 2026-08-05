@@ -73,6 +73,15 @@ Não reescreva nada agora. O objetivo é saber onde se está.
 Tudo da resposta 5 entra agora, com gravidade. Página viva de sistema herdado
 que começa vazia está mentindo.
 
+Uma linha por bug, sem narrativa: o que acontece, quando acontece, gravidade e
+onde. O detalhe vive na investigação, não na tabela - ela vai ser lida antes de
+cada sessão de código, pelo resto da vida do projeto.
+
+Dor que vale para o sistema inteiro - sem teste, sem log, sem validação de
+entrada - não vira quarenta linhas: vira uma linha por área, com a área no campo
+"Onde". Quarenta itens genéricos não dizem por onde começar e cobram contexto em
+toda leitura.
+
 ### 5. Continuidade
 
 Crie `docs/CONTINUAR.md` a partir de `templates/CONTINUAR.md`, **declarando
@@ -119,6 +128,7 @@ do assunto deste passo.
 - [ ] O `.gitignore` tem o bloco de segurança e nada sensível segue rastreado
 - [ ] O resumo inicial registrou fontes, inferências, riscos e primeira fatia candidata
 - [ ] `docs/BUGS.md` tem ao menos um item, ou o usuário declarou que não há nenhum
+- [ ] `docs/BUGS.md` tem uma linha por bug, sem narrativa, com dor genérica agrupada por área
 - [ ] `docs/CONTINUAR.md` declara o modo refatoração
 - [ ] `docs/CONTINUAR.md` registra próxima ação, perguntas abertas, riscos e última validação conhecida
 - [ ] Arquivo-gatilho que já existia foi acrescentado, não sobrescrito

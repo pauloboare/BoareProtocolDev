@@ -3,7 +3,7 @@
 **Construa software com IA sem perder memória, decisão e teste no caminho.**
 
 [![Licença MIT](https://img.shields.io/badge/licença-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/versão-v1.0.1-informational.svg)](#versionamento)
+[![Versão](https://img.shields.io/badge/versão-v1.1.0-informational.svg)](#versionamento)
 [![Agnóstico a ferramenta](https://img.shields.io/badge/agnóstico-IDE%20%7C%20modelo%20%7C%20linguagem-lightgrey.svg)](#para-quem-serve)
 
 Boare Protocol Dev é um protocolo para conduzir projetos de software com IA
@@ -25,6 +25,7 @@ exemplo, não como stack obrigatória.
 
 - [Instalação rápida](#instalação-rápida)
 - [Uso diário](#uso-diário)
+- [Custo de contexto](#custo-de-contexto)
 - [Comandos](#comandos)
 - [Ferramentas suportadas](#ferramentas-suportadas)
 - [Instalação por clone local](#instalação-por-clone-local)
@@ -106,6 +107,31 @@ A IA deve ler, nesta ordem:
 
 Instalar não obriga a IA a usar o protocolo em toda tarefa. O adaptador apenas
 deixa o protocolo disponível. A IA só deve conduzi-lo quando você pedir.
+
+## Custo de contexto
+
+`docs/CONTINUAR.md` é lido no começo de toda sessão, e `docs/BUGS.md` antes de
+cada ciclo de código. Crescendo sem limite, os dois tornariam o projeto mais
+caro a cada mês só por existir. O protocolo evita isso sem perder histórico:
+
+- `docs/CONTINUAR.md` é bilhete de retomada, não diário: no máximo 3 arquivos na
+  lista de leitura obrigatória e 5 itens em perguntas abertas, decisões
+  recentes, riscos ativos e observações finais.
+- O excedente não é apagado, é promovido: decisão vai para
+  `docs/DECISOES_TECNICAS.md` e risco aceito vira restrição no `docs/FSD.md`.
+- Bug não é copiado para o `docs/CONTINUAR.md`. `docs/BUGS.md` é a fonte.
+- Antes de codificar, a IA lê só os bugs abertos e em investigação. Os fechados
+  viram consulta por busca, quando um sintoma parecer conhecido.
+- Passou de 10 bugs fechados, os mais antigos vão para
+  `docs/historico/BUGS-FECHADOS.md`, no mesmo formato. Sai de vista, não sai do
+  repositório.
+
+A compactação acontece dentro do fluxo normal, ao fechar um passo e em
+`/protocolo-retomada`. Não há comando novo para lembrar.
+
+Projeto que já rodava antes desta regra: reinstalar não mexe no que está em
+`docs/`. As seções novas entram na primeira vez que a IA atualizar
+`docs/CONTINUAR.md` ou `docs/BUGS.md`, a partir dos templates.
 
 ## Comandos
 
@@ -218,7 +244,7 @@ de protocolo de mudança do sistema.
 Por padrão, os instaladores usam `v1`, o canal estável.
 
 - Use `v1` para acompanhar correções compatíveis.
-- Use uma tag fixa, como `v1.0.1`, para congelar totalmente o comportamento.
+- Use uma tag fixa, como `v1.1.0`, para congelar totalmente o comportamento.
 - Trate `main` como desenvolvimento.
 
 ## Como funciona

@@ -22,6 +22,26 @@ Continue pelo estado atual deste projeto.
 - Se alguém chamar `/protocolo-iniciar` em um clone que já tem este arquivo,
   ignore o início e retome daqui.
 
+## Limite deste arquivo
+
+Bilhete de retomada, não diário. Ele é lido inteiro no começo de toda sessão e
+reescrito no fim de cada passo: o que cresce aqui é cobrado em contexto todo dia.
+
+Tetos, conferidos sempre que este arquivo for atualizado:
+
+- Antes de continuar, leia: 3 arquivos
+- Perguntas abertas: 5
+- Decisões recentes: 5
+- Riscos ativos: 5
+- Observações finais para a próxima sessão: 5
+
+O excedente não é apagado, é promovido: decisão vai para
+`docs/DECISOES_TECNICAS.md`, risco aceito vira restrição no `docs/FSD.md`,
+pergunta respondida vira decisão. Item sem lugar definitivo fica aqui.
+
+Bug não é copiado para cá. `docs/BUGS.md` é a fonte; cite o identificador
+(`B07`) só quando ele bloquear a próxima ação.
+
 ## Modo
 
 <normal / refatoração>

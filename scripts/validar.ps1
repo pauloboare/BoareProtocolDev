@@ -3,7 +3,7 @@ param()
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$releaseVersion = '1.0.1'
+$releaseVersion = '1.1.0'
 $protocolRef = 'v1'
 $expectedRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/CONDUZIR.md"
 $expectedStartRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/COMECE_AQUI.md"
@@ -58,6 +58,59 @@ function Assert-TextDoesNotContain {
     }
 }
 
+$commandFiles = @(
+    'protocolo.md',
+    'protocolo-iniciar.md',
+    'protocolo-continuar.md',
+    'protocolo-adotar.md',
+    'protocolo-status.md',
+    'protocolo-retomada.md'
+)
+
+$continuarRequiredLines = @(
+    '## Limite deste arquivo',
+    '- Antes de continuar, leia: 3 arquivos',
+    '- Perguntas abertas: 5',
+    '- Decisões recentes: 5',
+    '- Riscos ativos: 5',
+    '- Observações finais para a próxima sessão: 5',
+    'docs/DECISOES_TECNICAS.md',
+    '.boare/protocolo/protocolo.json'
+)
+
+function Get-MarkdownSectionTitles {
+    param([string]$Path)
+    return @(
+        Get-Content -LiteralPath $Path -Encoding utf8 |
+            Where-Object { $_ -match '^##\s' } |
+            ForEach-Object { $_.Trim() }
+    )
+}
+
+function Assert-ContinuarContract {
+    param(
+        [string]$Path,
+        [string]$Origem
+    )
+
+    $text = Get-Content -LiteralPath $Path -Raw -Encoding utf8
+    foreach ($line in $continuarRequiredLines) {
+        if (-not $text.Contains($line)) {
+            throw "CONTINUAR.md gerado por ${Origem} não tem a regra de contexto esperada: $line"
+        }
+    }
+
+    $templateTitles = Get-MarkdownSectionTitles (Resolve-RepoPath 'templates\CONTINUAR.md')
+    $generatedTitles = Get-MarkdownSectionTitles $Path
+    if (($templateTitles -join ' | ') -ne ($generatedTitles -join ' | ')) {
+        throw @"
+Seções de docs/CONTINUAR.md geradas por ${Origem} divergem de templates/CONTINUAR.md.
+Template: $($templateTitles -join ' | ')
+Gerado:   $($generatedTitles -join ' | ')
+"@
+    }
+}
+
 function New-SmokeTestDir {
     $path = Join-Path $repoRoot ('.tmp-validar-' + [guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $path | Out-Null
@@ -72,6 +125,33 @@ function Assert-SmokeFile {
     $path = Join-Path $Root $RelativePath
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Smoke test falhou. Arquivo esperado não foi criado: $RelativePath"
+    }
+}
+
+function Assert-SmokeTextContains {
+    param(
+        [string]$Root,
+        [string]$RelativePath,
+        [string]$Expected
+    )
+    $path = Join-Path $Root $RelativePath
+    Assert-SmokeFile $Root $RelativePath
+    $text = Get-Content -LiteralPath $path -Raw -Encoding utf8
+    if (-not $text.Contains($Expected)) {
+        throw "Smoke test falhou. Texto esperado não encontrado em ${RelativePath}: $Expected"
+    }
+}
+
+function Assert-SameFileText {
+    param(
+        [string]$LeftPath,
+        [string]$RightPath,
+        [string]$Contexto
+    )
+    $left = (Get-Content -LiteralPath $LeftPath -Raw -Encoding utf8) -replace "`r`n", "`n"
+    $right = (Get-Content -LiteralPath $RightPath -Raw -Encoding utf8) -replace "`r`n", "`n"
+    if ($left.TrimEnd("`n") -ne $right.TrimEnd("`n")) {
+        throw "instalar.ps1 e instalar.sh geram conteúdo diferente para ${Contexto}. As duas cópias precisam andar juntas."
     }
 }
 
@@ -97,6 +177,7 @@ function Invoke-PowerShellInstallerSmokeTests {
         Push-Location $autoEmpty
         try { & $installer -Projeto -Ferramenta auto | Out-Null } finally { Pop-Location }
         Assert-SmokeFile $autoEmpty 'docs\CONTINUAR.md'
+        Assert-ContinuarContract (Join-Path $autoEmpty 'docs\CONTINUAR.md') 'instalar.ps1'
         Assert-SmokeFile $autoEmpty 'docs\INSTALAR_PROTOCOLO.md'
         Assert-SmokeFile $autoEmpty '.boare\protocolo\CONDUZIR.md'
         Assert-SmokeFile $autoEmpty '.boare\protocolo\protocolo.json'
@@ -135,6 +216,8 @@ function Invoke-PowerShellInstallerSmokeTests {
         try { & $installer -Projeto -Ferramenta todas | Out-Null } finally { Pop-Location }
         Assert-SmokeFile $allTools '.github\copilot-instructions.md'
         Assert-SmokeFile $allTools '.claude\commands\protocolo.md'
+        Assert-SmokeTextContains $allTools '.claude\commands\protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
+        Assert-SmokeTextContains $allTools '.cursor\commands\protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
         Assert-SmokeFile $allTools '.cursor\commands\protocolo.md'
         Assert-SmokeFile $allTools '.opencode\commands\protocolo.md'
         Assert-SmokeFile $allTools '.agents\skills\protocolo\SKILL.md'
@@ -246,12 +329,36 @@ function Invoke-ShellInstallerSmokeTests {
             Remove-SmokeTestDir $autoVSCode
         }
 
+        $parityShell = New-SmokeTestDir
+        $parityPwsh = New-SmokeTestDir
+        try {
+            Push-Location $parityShell
+            try { & $shPath -c $shellInstallerRunner 'boare-smoke' $installer '--projeto' '--ferramenta' 'claude' | Out-Null } finally { Pop-Location }
+            Push-Location $parityPwsh
+            try { & (Resolve-RepoPath 'instalar.ps1') -Projeto -Ferramenta claude | Out-Null } finally { Pop-Location }
+
+            $parityFiles = @('docs/CONTINUAR.md') + @(
+                $commandFiles | ForEach-Object { ".claude/commands/$_" }
+            )
+            foreach ($parityFile in $parityFiles) {
+                Assert-SameFileText `
+                    (Join-Path $parityShell $parityFile) `
+                    (Join-Path $parityPwsh $parityFile) `
+                    $parityFile
+            }
+        } finally {
+            Remove-SmokeTestDir $parityShell
+            Remove-SmokeTestDir $parityPwsh
+        }
+
         $allTools = New-SmokeTestDir
         try {
             Push-Location $allTools
             try { & $shPath -c $shellInstallerRunner 'boare-smoke' $installer '--projeto' '--ferramenta' 'todas' | Out-Null } finally { Pop-Location }
             Assert-SmokeFile $allTools '.github/copilot-instructions.md'
             Assert-SmokeFile $allTools '.claude/commands/protocolo.md'
+            Assert-SmokeTextContains $allTools '.claude/commands/protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
+            Assert-SmokeTextContains $allTools '.cursor/commands/protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
             Assert-SmokeFile $allTools '.cursor/commands/protocolo.md'
             Assert-SmokeFile $allTools '.opencode/commands/protocolo.md'
             Assert-SmokeFile $allTools '.agents/skills/protocolo/SKILL.md'
@@ -261,6 +368,7 @@ function Invoke-ShellInstallerSmokeTests {
             Assert-SmokeFile $allTools '.codex/skills/protocolo/SKILL.md'
             Assert-SmokeFile $allTools 'docs/INSTALAR_PROTOCOLO.md'
             Assert-SmokeFile $allTools 'docs/CONTINUAR.md'
+            Assert-ContinuarContract (Join-Path $allTools 'docs/CONTINUAR.md') 'instalar.sh'
             Assert-SmokeFile $allTools 'AGENTS.md'
             Assert-SmokeFile $allTools '.boare/protocolo/CONDUZIR.md'
             Assert-SmokeFile $allTools '.boare/protocolo/protocolo.json'
@@ -478,6 +586,26 @@ Assert-TextContains 'templates\CONTINUAR.md' '## Perguntas abertas'
 Assert-TextContains 'templates\CONTINUAR.md' '## Riscos ativos'
 Assert-TextContains 'templates\CONTINUAR.md' '## Última validação conhecida'
 Assert-TextContains 'templates\CONTINUAR.md' '/protocolo-retomada'
+Assert-TextContains 'templates\CONTINUAR.md' '## Limite deste arquivo'
+Assert-TextContains 'templates\BUGS.md' '## Como ler este arquivo'
+Assert-TextContains 'templates\BUGS.md' 'os **10 mais recentes**'
+Assert-TextContains 'templates\BUGS.md' 'docs/historico/BUGS-FECHADOS.md'
+Assert-TextDoesNotContain 'templates\BUGS.md' 'Leia antes de codificar. Escreva assim que encontrar.'
+Assert-TextContains 'CONDUZIR.md' 'docs/historico/BUGS-FECHADOS.md'
+Assert-TextContains 'CONDUZIR.md' 'é consulta por busca, não leitura'
+Assert-TextContains 'CONDUZIR.md' 'Arquivo que nasceu antes desta regra'
+Assert-TextDoesNotContain 'CONDUZIR.md' 'Leia antes de codificar qualquer coisa'
+Assert-TextContains 'passos\09-codificar-e-testar.md' 'Abertos** e **Em investigação**'
+Assert-TextContains 'passos\09-codificar-e-testar.md' 'docs/historico/BUGS-FECHADOS.md'
+Assert-TextContains 'passos\09-codificar-e-testar.md' 'estão dentro do teto'
+Assert-TextDoesNotContain 'passos\09-codificar-e-testar.md' 'mantenha bugs, riscos e perguntas abertas visíveis'
+Assert-TextContains 'passos\02-repositorio.md' 'teto de bugs'
+Assert-TextContains 'passos\02b-adotar-existente.md' 'uma linha por área'
+Assert-TextContains 'plugins\protocolo\commands\protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
+Assert-TextContains 'instalar.ps1' 'docs/historico/BUGS-FECHADOS.md'
+Assert-TextContains 'instalar.ps1' '## Limite deste arquivo'
+Assert-TextContains 'instalar.sh' 'docs/historico/BUGS-FECHADOS.md'
+Assert-TextContains 'instalar.sh' '## Limite deste arquivo'
 Assert-TextContains 'instalar.ps1' 'protocolo-iniciar.md'
 Assert-TextContains 'instalar.ps1' 'protocolo-continuar.md'
 Assert-TextContains 'instalar.ps1' 'protocolo-adotar.md'

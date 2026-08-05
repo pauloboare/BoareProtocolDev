@@ -52,13 +52,16 @@ Sequência:
 4. Criar o exemplo do arquivo de ambiente, **sem valores reais**. Ele documenta
    quais variáveis existem.
 5. Criar `docs/BUGS.md` a partir de `templates/BUGS.md`. Nasce vazio e acompanha
-   o projeto até o fim da vida dele.
+   o projeto até o fim da vida dele. A regra de leitura e o teto de bugs
+   fechados vêm dentro do template: não os remova, é o que impede o arquivo de
+   virar um custo fixo de toda sessão de código.
 6. Criar `docs/CONTINUAR.md` a partir de `templates/CONTINUAR.md`. Se a
    ferramenta usada tiver um arquivo-gatilho próprio na raiz do projeto,
    acrescente nele uma linha curta: "Leia `docs/CONTINUAR.md` e siga."
    Isso é adaptação de IDE/agente, não regra do protocolo.
    Preencha o estado inicial com o Passo 2 como passo atual e o Passo 3 como
-   próxima ação, ou com a decisão de manter só local quando for o caso.
+   próxima ação, ou com a decisão de manter só local quando for o caso. A seção
+   "Limite deste arquivo" vem no template e vale desde o primeiro dia.
 7. Primeiro commit. Depois, se a resposta 5 pediu remoto, criar o repositório
    remoto e enviar. Se não pediu, registrar que o projeto está só local por
    enquanto em `docs/CONTINUAR.md`.

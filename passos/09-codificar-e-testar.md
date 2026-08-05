@@ -23,7 +23,11 @@ Implementar uma funcionalidade com teste, sem sair do que o FSD especificou.
 
 Antes de escrever qualquer código:
 
-1. Leia `docs/BUGS.md`. É o que o projeto já sabe sobre si mesmo.
+1. Leia as seções **Abertos** e **Em investigação** de `docs/BUGS.md`. É o que o
+   projeto já sabe sobre si mesmo. **Fechados** só quando o sintoma bater com
+   algo conhecido: busque pelo termo, não releia a tabela inteira. Este passo
+   repete uma vez por funcionalidade, e o que se relê à toa se paga em contexto
+   toda vez.
 2. Releia o item do FSD e os critérios de aceite do PRD que ele cobre.
 3. Consulte `PADROES.md` para o que é inegociável, e `skills/README.md` para
    revisão mais funda no que o item envolver.
@@ -45,7 +49,10 @@ Regras:
 - Achou bug no caminho? Registre em `docs/BUGS.md` **antes** de continuar, mesmo
   que vá corrigir logo em seguida.
 - Corrigiu bug? O teste que o reproduziria entra no mesmo commit. Sem teste, ele
-  volta.
+  volta. Ele sai de Abertos e entra em Fechados com a causa raiz, e o "Onde"
+  vai junto, dentro do "O que era" - é o que faz a busca achar depois. Passou de
+  10 fechados, os mais antigos vão para `docs/historico/BUGS-FECHADOS.md`, no
+  mesmo formato.
 - Teste que nunca falhou não prova nada. Se passou de primeira, desconfie: ou o
   comportamento já existia, ou o teste não testa o que você acha que testa.
   **Exceção: modo refatoração, abaixo** - lá o teste passar de primeira é o
@@ -56,8 +63,11 @@ Regras:
   controle de acesso a arquivo, restrinja ao projeto e mascare segredos.
 
 Depois de cada funcionalidade, atualize `docs/CONTINUAR.md` antes do commit:
-marque o item concluído, indique o próximo item do FSD, registre testes rodados
-e mantenha bugs, riscos e perguntas abertas visíveis para outro computador.
+marque o item concluído, indique o próximo item do FSD e registre os testes
+rodados. Bug, risco e pergunta ficam onde já moram - não copie `docs/BUGS.md`
+para dentro dele; aponte o identificador só quando ele bloquear o próximo item.
+Confira os tetos declarados no próprio arquivo e promova o excedente ao artefato
+definitivo em vez de apagar.
 
 ## Modo refatoração - código que já existe
 
@@ -93,6 +103,7 @@ Avise na hora.
 - [ ] Em modo refatoração: a rede ficou verde antes de mexer e seguiu verde depois
 - [ ] Os não-negociáveis do `PADROES.md` estão respeitados
 - [ ] `docs/CONTINUAR.md` registra o próximo item do FSD ou o fechamento do ciclo
+- [ ] `docs/CONTINUAR.md` e `docs/BUGS.md` estão dentro do teto, e o excedente foi promovido, não apagado
 
 ## Commit
 
@@ -104,6 +115,8 @@ git add <arquivos-da-funcionalidade> <arquivos-de-teste> docs/BUGS.md docs/CONTI
 git diff --staged
 git commit -m "feat(<escopo>): <o que passou a funcionar>"
 ```
+
+Houve transbordo para `docs/historico/`? O arquivo entra no mesmo commit.
 
 ## Fechamento
 

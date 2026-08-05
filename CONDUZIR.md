@@ -50,6 +50,20 @@ atualize `docs/CONTINUAR.md` com o último passo concluído, o passo atual, a
 próxima ação, os arquivos que a próxima sessão deve ler, perguntas abertas,
 riscos ativos e a última validação conhecida.
 
+Esse arquivo tem teto, e ele é conferido em toda atualização: no máximo 3
+arquivos em "antes de continuar, leia" e 5 itens em perguntas abertas, decisões
+recentes, riscos ativos e observações finais. O excedente não é apagado, é
+promovido ao artefato definitivo antes de sair: decisão para
+`docs/DECISOES_TECNICAS.md`, risco aceito para `docs/FSD.md`, pergunta
+respondida vira decisão. Bug nunca é copiado para lá; `docs/BUGS.md` é a fonte.
+Bilhete de retomada que vira diário é lido inteiro toda sessão e cobra por isso.
+
+Arquivo que nasceu antes desta regra não tem a seção "Limite deste arquivo". Ao
+atualizá-lo, acrescente a seção a partir de `templates/CONTINUAR.md` antes de
+gravar. Vale o mesmo para `docs/BUGS.md`: faltando a seção "Como ler este
+arquivo" ou o teto em Fechados, acrescente as duas na primeira vez que tocar
+nele. Instalar de novo não mexe no que já está em `docs/`; quem migra é você.
+
 ## Como conduzir
 
 1. Descubra o passo atual por `docs/CONTINUAR.md` e pelos artefatos em `docs/`.
@@ -103,8 +117,15 @@ ponto de decisão.
 `docs/BUGS.md` nasce no Passo 2 e acompanha o projeto até o fim.
 
 - Bug encontrado entra ali **na hora**, mesmo que o conserto venha logo depois.
-- Leia antes de codificar qualquer coisa: é o que o projeto sabe sobre si mesmo.
+- Antes de codificar, leia **Abertos** e **Em investigação**: é o que o projeto
+  sabe sobre si mesmo e pode mudar o que você vai escrever.
+- **Fechados** é consulta por busca, não leitura. Procure pelo sintoma, pelo
+  arquivo ou pelo identificador quando desconfiar de bug que voltou. Reler a
+  tabela inteira a cada sessão não muda decisão nenhuma e cobra contexto.
 - Bug fechado não é apagado, vira histórico com a causa e o teste que o cobre.
+  Passou de 10 em Fechados, os mais antigos vão para
+  `docs/historico/BUGS-FECHADOS.md`, no mesmo formato. Sai de vista, não do
+  repositório.
 
 ## Segurança - regra permanente, não é um passo
 
