@@ -23,7 +23,7 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 PROJETO=0
 FERRAMENTA="auto"
 REFERENCIA="v1"
-PROTOCOL_VERSION="1.1.0"
+PROTOCOL_VERSION="1.2.0"
 STATUS=0
 
 while [ "$#" -gt 0 ]; do
@@ -61,6 +61,10 @@ START_CDN_URL="https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$REFERENC
 START_GITHUB_URL="https://github.com/pauloboare/BoareProtocolDev/blob/$REFERENCIA/COMECE_AQUI.md"
 LOCAL_PROTOCOL_PATH=".boare/protocolo/CONDUZIR.md"
 LOCAL_START_PATH=".boare/protocolo/COMECE_AQUI.md"
+BOOTSTRAP_SH_URL="https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$REFERENCIA/bootstrap.sh"
+BOOTSTRAP_SH_CDN_URL="https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$REFERENCIA/bootstrap.sh"
+BOOTSTRAP_PS_URL="https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$REFERENCIA/bootstrap.ps1"
+BOOTSTRAP_PS_CDN_URL="https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$REFERENCIA/bootstrap.ps1"
 
 write_commands_frontmatter() {
     COMMANDS_DESTINO="$1"
@@ -153,6 +157,37 @@ Atualize docs/CONTINUAR.md com o estado real deste projeto para outro computador
 
 Antes de gravar, aplique os limites do próprio arquivo: no máximo 3 arquivos na lista de leitura obrigatória e 5 itens em perguntas abertas, decisões recentes, riscos ativos e observações finais. O excedente não é apagado, é promovido: decisão vai para docs/DECISOES_TECNICAS.md, risco aceito vira restrição em docs/FSD.md, pergunta respondida vira decisão. Bug não é copiado para o CONTINUAR.md; docs/BUGS.md é a fonte. Se docs/BUGS.md tiver mais de 10 bugs fechados, mova os mais antigos para docs/historico/BUGS-FECHADOS.md, no mesmo formato. Se esses arquivos forem anteriores a esta regra e não tiverem as seções Limite deste arquivo e Como ler este arquivo, acrescente-as a partir dos templates antes de gravar.
 FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-atualizar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-atualizar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-atualizar.md" <<FIM
+---
+description: Atualiza a cópia local do Boare Protocol Dev neste projeto
+---
+
+Verifique .boare/protocolo/protocolo.json. Se não existir, informe que o protocolo não está instalado neste projeto e pare.
+
+Para conferir a versão disponível sem instalar nada, baixe e execute o bootstrap com a flag de status. Use o primeiro que conseguir acessar, conforme o sistema operacional:
+
+macOS/Linux (bootstrap.sh), com --projeto --status:
+1. $BOOTSTRAP_SH_URL
+2. $BOOTSTRAP_SH_CDN_URL
+
+Windows (bootstrap.ps1), com -Projeto -Status:
+1. $BOOTSTRAP_PS_URL
+2. $BOOTSTRAP_PS_CDN_URL
+
+Se a versão instalada já for igual à disponível, informe isso ao usuário e pare sem alterar nada.
+
+Havendo diferença, mostre as duas versões e peça confirmação explícita antes de baixar e executar o instalador de verdade - isso baixa e executa código do GitHub. Confirmado, rode o mesmo bootstrap trocando --status por --ferramenta auto (ou -Status por -Ferramenta auto). Isso atualiza só os adaptadores já detectados neste projeto; não instala ferramenta nova.
+
+Depois de atualizar:
+1. Mostre o diff de .boare/protocolo/ e dos adaptadores alterados.
+2. docs/CONTINUAR.md ou docs/BUGS.md anteriores às seções novas do protocolo? Acrescente-as a partir de .boare/protocolo/templates/ antes de seguir.
+3. Rode a validação do projeto, se existir.
+4. Commit próprio, separado de qualquer mudança do sistema: chore(protocolo): atualiza para <versão> (<referência>).
+
+Não avance passo do protocolo nesta operação. Atualização de protocolo não é um passo do fluxo.
+FIM
 }
 
 write_commands_plain() {
@@ -233,6 +268,35 @@ Leia $LOCAL_PROTOCOL_PATH se existir. Se não existir, leia o primeiro link que 
 Atualize docs/CONTINUAR.md com o estado real deste projeto para outro computador ou agente continuar sem reiniciar. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida.
 
 Antes de gravar, aplique os limites do próprio arquivo: no máximo 3 arquivos na lista de leitura obrigatória e 5 itens em perguntas abertas, decisões recentes, riscos ativos e observações finais. O excedente não é apagado, é promovido: decisão vai para docs/DECISOES_TECNICAS.md, risco aceito vira restrição em docs/FSD.md, pergunta respondida vira decisão. Bug não é copiado para o CONTINUAR.md; docs/BUGS.md é a fonte. Se docs/BUGS.md tiver mais de 10 bugs fechados, mova os mais antigos para docs/historico/BUGS-FECHADOS.md, no mesmo formato. Se esses arquivos forem anteriores a esta regra e não tiverem as seções Limite deste arquivo e Como ler este arquivo, acrescente-as a partir dos templates antes de gravar.
+FIM
+
+    [ -f "$COMMANDS_DESTINO/protocolo-atualizar.md" ] && echo "Aviso: sobrescrevendo comando existente: $COMMANDS_DESTINO/protocolo-atualizar.md" >&2
+    cat > "$COMMANDS_DESTINO/protocolo-atualizar.md" <<FIM
+# Atualiza a cópia local do Boare Protocol Dev neste projeto
+
+Verifique .boare/protocolo/protocolo.json. Se não existir, informe que o protocolo não está instalado neste projeto e pare.
+
+Para conferir a versão disponível sem instalar nada, baixe e execute o bootstrap com a flag de status. Use o primeiro que conseguir acessar, conforme o sistema operacional:
+
+macOS/Linux (bootstrap.sh), com --projeto --status:
+1. $BOOTSTRAP_SH_URL
+2. $BOOTSTRAP_SH_CDN_URL
+
+Windows (bootstrap.ps1), com -Projeto -Status:
+1. $BOOTSTRAP_PS_URL
+2. $BOOTSTRAP_PS_CDN_URL
+
+Se a versão instalada já for igual à disponível, informe isso ao usuário e pare sem alterar nada.
+
+Havendo diferença, mostre as duas versões e peça confirmação explícita antes de baixar e executar o instalador de verdade - isso baixa e executa código do GitHub. Confirmado, rode o mesmo bootstrap trocando --status por --ferramenta auto (ou -Status por -Ferramenta auto). Isso atualiza só os adaptadores já detectados neste projeto; não instala ferramenta nova.
+
+Depois de atualizar:
+1. Mostre o diff de .boare/protocolo/ e dos adaptadores alterados.
+2. docs/CONTINUAR.md ou docs/BUGS.md anteriores às seções novas do protocolo? Acrescente-as a partir de .boare/protocolo/templates/ antes de seguir.
+3. Rode a validação do projeto, se existir.
+4. Commit próprio, separado de qualquer mudança do sistema: chore(protocolo): atualiza para <versão> (<referência>).
+
+Não avance passo do protocolo nesta operação. Atualização de protocolo não é um passo do fluxo.
 FIM
 }
 

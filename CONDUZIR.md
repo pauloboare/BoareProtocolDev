@@ -36,6 +36,19 @@ Sessão normal usa a cópia local do protocolo. Não consulte GitHub para checar
 atualização nem pergunte se deve atualizar. Atualização de protocolo é ação
 explícita do usuário e deve virar commit próprio.
 
+Pedida a atualização - por comando, quando a ferramenta tiver `/protocolo-atualizar`,
+ou só pedindo em texto - confira `.boare/protocolo/protocolo.json`, baixe e rode
+o bootstrap do repositório com a flag de status para saber a versão disponível
+na referência instalada, e mostre as duas versões ao usuário. Já estando
+atualizado, informe e pare sem alterar nada. Havendo diferença, peça confirmação
+explícita antes de baixar e executar o instalador de verdade - isso baixa e
+executa código do GitHub. Confirmado, rode o mesmo bootstrap trocando a flag de
+status pela de instalação com ferramenta automática; isso atualiza só os
+adaptadores já detectados neste projeto, sem instalar ferramenta nova. Por fim,
+se `docs/CONTINUAR.md` ou `docs/BUGS.md` forem anteriores às regras de contexto
+deste arquivo, acrescente as seções que faltam a partir dos templates, e faça o
+commit da atualização separado de qualquer mudança do sistema.
+
 Antes de conduzir qualquer passo:
 
 1. Se existir `docs/CONTINUAR.md`, leia primeiro e trate como ponto de partida.

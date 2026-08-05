@@ -27,7 +27,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$protocolVersion = '1.1.0'
+$protocolVersion = '1.2.0'
 $protocolUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/CONDUZIR.md"
 $protocolCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/CONDUZIR.md"
 $protocolGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Referencia/CONDUZIR.md"
@@ -36,8 +36,13 @@ $startCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referen
 $startGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Referencia/COMECE_AQUI.md"
 $localProtocolPath = '.boare/protocolo/CONDUZIR.md'
 $localStartPath = '.boare/protocolo/COMECE_AQUI.md'
+$bootstrapShUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/bootstrap.sh"
+$bootstrapShCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/bootstrap.sh"
+$bootstrapPsUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/bootstrap.ps1"
+$bootstrapPsCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/bootstrap.ps1"
 $basePrompt = "Leia $localProtocolPath se existir. Se não existir, leia o primeiro link que conseguir acessar:`n1. $protocolUrl`n2. $protocolCdnUrl`n3. $protocolGitHubUrl"
 $startPrompt = "Leia $localStartPath se existir. Se não existir, leia o primeiro link que conseguir acessar:`n1. $startUrl`n2. $startCdnUrl`n3. $startGitHubUrl"
+$updatePrompt = "Verifique .boare/protocolo/protocolo.json. Se não existir, informe que o protocolo não está instalado neste projeto e pare.`n`nPara conferir a versão disponível sem instalar nada, baixe e execute o bootstrap com a flag de status. Use o primeiro que conseguir acessar, conforme o sistema operacional:`n`nmacOS/Linux (bootstrap.sh), com --projeto --status:`n1. $bootstrapShUrl`n2. $bootstrapShCdnUrl`n`nWindows (bootstrap.ps1), com -Projeto -Status:`n1. $bootstrapPsUrl`n2. $bootstrapPsCdnUrl`n`nSe a versão instalada já for igual à disponível, informe isso ao usuário e pare sem alterar nada.`n`nHavendo diferença, mostre as duas versões e peça confirmação explícita antes de baixar e executar o instalador de verdade - isso baixa e executa código do GitHub. Confirmado, rode o mesmo bootstrap trocando --status por --ferramenta auto (ou -Status por -Ferramenta auto). Isso atualiza só os adaptadores já detectados neste projeto; não instala ferramenta nova.`n`nDepois de atualizar:`n1. Mostre o diff de .boare/protocolo/ e dos adaptadores alterados.`n2. docs/CONTINUAR.md ou docs/BUGS.md anteriores às seções novas do protocolo? Acrescente-as a partir de .boare/protocolo/templates/ antes de seguir.`n3. Rode a validação do projeto, se existir.`n4. Commit próprio, separado de qualquer mudança do sistema: chore(protocolo): atualiza para <versão> (<referência>).`n`nNão avance passo do protocolo nesta operação. Atualização de protocolo não é um passo do fluxo."
 
 $commands = @(
     @{
@@ -69,6 +74,11 @@ $commands = @(
         File = 'protocolo-retomada.md'
         Description = 'Prepara a retomada do Boare Protocol Dev para a próxima sessão'
         Prompt = "$basePrompt`n`nAtualize docs/CONTINUAR.md com o estado real deste projeto para outro computador ou agente continuar sem reiniciar. Não avance passos. Registre: último passo concluído, passo atual, última ação feita, próxima ação recomendada, próximo comando recomendado, arquivos que devem ser lidos, perguntas abertas, decisões recentes, riscos ativos e última validação conhecida.`n`nAntes de gravar, aplique os limites do próprio arquivo: no máximo 3 arquivos na lista de leitura obrigatória e 5 itens em perguntas abertas, decisões recentes, riscos ativos e observações finais. O excedente não é apagado, é promovido: decisão vai para docs/DECISOES_TECNICAS.md, risco aceito vira restrição em docs/FSD.md, pergunta respondida vira decisão. Bug não é copiado para o CONTINUAR.md; docs/BUGS.md é a fonte. Se docs/BUGS.md tiver mais de 10 bugs fechados, mova os mais antigos para docs/historico/BUGS-FECHADOS.md, no mesmo formato. Se esses arquivos forem anteriores a esta regra e não tiverem as seções Limite deste arquivo e Como ler este arquivo, acrescente-as a partir dos templates antes de gravar."
+    },
+    @{
+        File = 'protocolo-atualizar.md'
+        Description = 'Atualiza a cópia local do Boare Protocol Dev neste projeto'
+        Prompt = $updatePrompt
     }
 )
 

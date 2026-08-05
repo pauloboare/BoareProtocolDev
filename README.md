@@ -3,7 +3,7 @@
 **Construa software com IA sem perder memória, decisão e teste no caminho.**
 
 [![Licença MIT](https://img.shields.io/badge/licença-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/versão-v1.1.0-informational.svg)](#versionamento)
+[![Versão](https://img.shields.io/badge/versão-v1.2.0-informational.svg)](#versionamento)
 [![Agnóstico a ferramenta](https://img.shields.io/badge/agnóstico-IDE%20%7C%20modelo%20%7C%20linguagem-lightgrey.svg)](#para-quem-serve)
 
 Boare Protocol Dev é um protocolo para conduzir projetos de software com IA
@@ -145,6 +145,7 @@ Quando a ferramenta suporta comandos, use:
 | `/protocolo-adotar` | Adotar o protocolo em sistema existente |
 | `/protocolo-status` | Diagnosticar o estado sem alterar arquivos |
 | `/protocolo-retomada` | Preparar a próxima sessão antes de encerrar |
+| `/protocolo-atualizar` | Atualizar a cópia local do protocolo, com confirmação explícita antes de instalar |
 
 Se `/protocolo-iniciar` for chamado em um clone que já tem
 `docs/CONTINUAR.md`, o adaptador deve ignorar o início e retomar pelo estado
@@ -225,7 +226,13 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/paulo
 & $b -Projeto -Status
 ```
 
-Para atualizar, rode novamente a instalação:
+Para atualizar sem sair da conversa com a IA, use `/protocolo-atualizar` quando a
+ferramenta suportar comandos e tiver permissão de agente. Ele confere a versão
+disponível, pede confirmação explícita antes de baixar e executar o instalador
+- porque isso baixa e executa código do GitHub - e faz o commit da atualização
+separado de qualquer mudança do sistema.
+
+Para atualizar por terminal, rode novamente a instalação:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/v1/bootstrap.sh | sh -s -- --projeto --ferramenta auto
@@ -244,7 +251,7 @@ de protocolo de mudança do sistema.
 Por padrão, os instaladores usam `v1`, o canal estável.
 
 - Use `v1` para acompanhar correções compatíveis.
-- Use uma tag fixa, como `v1.1.0`, para congelar totalmente o comportamento.
+- Use uma tag fixa, como `v1.2.0`, para congelar totalmente o comportamento.
 - Trate `main` como desenvolvimento.
 
 ## Como funciona

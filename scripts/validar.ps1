@@ -3,11 +3,13 @@ param()
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$releaseVersion = '1.1.0'
+$releaseVersion = '1.2.0'
 $protocolRef = 'v1'
 $expectedRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/CONDUZIR.md"
 $expectedStartRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/COMECE_AQUI.md"
 $expectedCdnBaseUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$protocolRef/"
+$expectedBootstrapShRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/bootstrap.sh"
+$expectedBootstrapPsRawUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$protocolRef/bootstrap.ps1"
 $forbiddenEmDash = [string][char]0x2014
 
 function Resolve-RepoPath {
@@ -64,7 +66,8 @@ $commandFiles = @(
     'protocolo-continuar.md',
     'protocolo-adotar.md',
     'protocolo-status.md',
-    'protocolo-retomada.md'
+    'protocolo-retomada.md',
+    'protocolo-atualizar.md'
 )
 
 $continuarRequiredLines = @(
@@ -218,6 +221,8 @@ function Invoke-PowerShellInstallerSmokeTests {
         Assert-SmokeFile $allTools '.claude\commands\protocolo.md'
         Assert-SmokeTextContains $allTools '.claude\commands\protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
         Assert-SmokeTextContains $allTools '.cursor\commands\protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
+        Assert-SmokeTextContains $allTools '.claude\commands\protocolo-atualizar.md' 'protocolo.json'
+        Assert-SmokeTextContains $allTools '.cursor\commands\protocolo-atualizar.md' 'protocolo.json'
         Assert-SmokeFile $allTools '.cursor\commands\protocolo.md'
         Assert-SmokeFile $allTools '.opencode\commands\protocolo.md'
         Assert-SmokeFile $allTools '.agents\skills\protocolo\SKILL.md'
@@ -333,12 +338,20 @@ function Invoke-ShellInstallerSmokeTests {
         $parityPwsh = New-SmokeTestDir
         try {
             Push-Location $parityShell
-            try { & $shPath -c $shellInstallerRunner 'boare-smoke' $installer '--projeto' '--ferramenta' 'claude' | Out-Null } finally { Pop-Location }
+            try {
+                & $shPath -c $shellInstallerRunner 'boare-smoke' $installer '--projeto' '--ferramenta' 'claude' | Out-Null
+                & $shPath -c $shellInstallerRunner 'boare-smoke' $installer '--projeto' '--ferramenta' 'cursor' | Out-Null
+            } finally { Pop-Location }
             Push-Location $parityPwsh
-            try { & (Resolve-RepoPath 'instalar.ps1') -Projeto -Ferramenta claude | Out-Null } finally { Pop-Location }
+            try {
+                & (Resolve-RepoPath 'instalar.ps1') -Projeto -Ferramenta claude | Out-Null
+                & (Resolve-RepoPath 'instalar.ps1') -Projeto -Ferramenta cursor | Out-Null
+            } finally { Pop-Location }
 
             $parityFiles = @('docs/CONTINUAR.md') + @(
                 $commandFiles | ForEach-Object { ".claude/commands/$_" }
+            ) + @(
+                $commandFiles | ForEach-Object { ".cursor/commands/$_" }
             )
             foreach ($parityFile in $parityFiles) {
                 Assert-SameFileText `
@@ -359,6 +372,8 @@ function Invoke-ShellInstallerSmokeTests {
             Assert-SmokeFile $allTools '.claude/commands/protocolo.md'
             Assert-SmokeTextContains $allTools '.claude/commands/protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
             Assert-SmokeTextContains $allTools '.cursor/commands/protocolo-retomada.md' 'docs/historico/BUGS-FECHADOS.md'
+            Assert-SmokeTextContains $allTools '.claude/commands/protocolo-atualizar.md' 'protocolo.json'
+            Assert-SmokeTextContains $allTools '.cursor/commands/protocolo-atualizar.md' 'protocolo.json'
             Assert-SmokeFile $allTools '.cursor/commands/protocolo.md'
             Assert-SmokeFile $allTools '.opencode/commands/protocolo.md'
             Assert-SmokeFile $allTools '.agents/skills/protocolo/SKILL.md'
@@ -405,6 +420,7 @@ $requiredFiles = @(
     'plugins\protocolo\commands\protocolo-adotar.md',
     'plugins\protocolo\commands\protocolo-status.md',
     'plugins\protocolo\commands\protocolo-retomada.md',
+    'plugins\protocolo\commands\protocolo-atualizar.md',
     'instalar.ps1',
     'instalar.sh',
     'templates\BUGS.md',
@@ -497,7 +513,7 @@ Assert-TextContains 'README.md' '## Versionamento'
 Assert-TextContains 'README.md' '.boare/protocolo/protocolo.json'
 Assert-TextContains 'README.md' '--status'
 Assert-TextContains 'README.md' '-Status'
-Assert-TextContains 'README.md' 'Para atualizar, rode novamente a instalação'
+Assert-TextContains 'README.md' 'Para atualizar por terminal, rode novamente a instalação'
 Assert-TextContains 'README.md' 'Use o mecanismo nativo da ferramenta para ler URL'
 Assert-TextContains 'README.md' 'COMECE_AQUI.md'
 Assert-TextContains 'README.md' '## Comandos'
@@ -594,6 +610,9 @@ Assert-TextDoesNotContain 'templates\BUGS.md' 'Leia antes de codificar. Escreva 
 Assert-TextContains 'CONDUZIR.md' 'docs/historico/BUGS-FECHADOS.md'
 Assert-TextContains 'CONDUZIR.md' 'é consulta por busca, não leitura'
 Assert-TextContains 'CONDUZIR.md' 'Arquivo que nasceu antes desta regra'
+Assert-TextContains 'CONDUZIR.md' 'Pedida a atualização'
+Assert-TextContains 'CONDUZIR.md' '/protocolo-atualizar'
+Assert-TextContains 'CONDUZIR.md' 'peça confirmação'
 Assert-TextDoesNotContain 'CONDUZIR.md' 'Leia antes de codificar qualquer coisa'
 Assert-TextContains 'passos\09-codificar-e-testar.md' 'Abertos** e **Em investigação**'
 Assert-TextContains 'passos\09-codificar-e-testar.md' 'docs/historico/BUGS-FECHADOS.md'
@@ -606,6 +625,21 @@ Assert-TextContains 'instalar.ps1' 'docs/historico/BUGS-FECHADOS.md'
 Assert-TextContains 'instalar.ps1' '## Limite deste arquivo'
 Assert-TextContains 'instalar.sh' 'docs/historico/BUGS-FECHADOS.md'
 Assert-TextContains 'instalar.sh' '## Limite deste arquivo'
+
+$updateCommandFile = 'plugins\protocolo\commands\protocolo-atualizar.md'
+Assert-TextContains $updateCommandFile $expectedBootstrapShRawUrl
+Assert-TextContains $updateCommandFile $expectedBootstrapPsRawUrl
+Assert-TextContains $updateCommandFile 'protocolo.json'
+Assert-TextContains $updateCommandFile 'peça confirmação explícita'
+Assert-TextContains $updateCommandFile '--ferramenta auto'
+Assert-TextContains $updateCommandFile 'Não avance passo do protocolo'
+Assert-TextContains 'instalar.ps1' 'protocolo-atualizar.md'
+Assert-TextContains 'instalar.ps1' 'bootstrap.sh'
+Assert-TextContains 'instalar.ps1' 'bootstrap.ps1'
+Assert-TextContains 'instalar.sh' 'protocolo-atualizar.md'
+Assert-TextContains 'instalar.sh' 'BOOTSTRAP_SH_URL'
+Assert-TextContains 'instalar.sh' 'BOOTSTRAP_PS_URL'
+Assert-TextContains 'README.md' '/protocolo-atualizar'
 Assert-TextContains 'instalar.ps1' 'protocolo-iniciar.md'
 Assert-TextContains 'instalar.ps1' 'protocolo-continuar.md'
 Assert-TextContains 'instalar.ps1' 'protocolo-adotar.md'
