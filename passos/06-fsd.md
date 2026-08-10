@@ -44,7 +44,7 @@ O FSD tem seis partes:
    Estado de erro sem resposta definida é estado não especificado.
 5. **Plano de testes** - o que testar, com os casos de borda nomeados: valor
    ausente, coleção vazia, limite mínimo e máximo, transição proibida, duas
-   ações concorrentes no mesmo registro.
+   ações concorrentes no mesmo registro, acesso pelo papel errado.
 6. **Ordem de implementação** - o que vem antes do quê, e por quê.
 
 Rastreabilidade é o que faz este passo valer: toda `RN` do PRD tem que aparecer
@@ -69,6 +69,8 @@ Avise na hora, mesmo fora do assunto deste passo.
 - [ ] Toda operação declara os erros possíveis e a resposta de cada um
 - [ ] Toda tela que carrega dado tem estados de vazio, carregando e erro
 - [ ] O plano de testes nomeia casos de borda, não só o caminho feliz
+- [ ] Toda operação que lê ou altera recurso tem teste de acesso negado pelo
+      papel errado
 - [ ] A ordem de implementação não tem dependência circular
 - [ ] `docs/CONTINUAR.md` aponta o Passo 7 como próxima ação
 

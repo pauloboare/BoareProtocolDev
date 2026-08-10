@@ -43,7 +43,11 @@ Uma seção por operação, neste formato:
 | T01 |  | RN01 / CA01 |  |
 
 Casos de borda obrigatórios: valor ausente · coleção vazia · limite mínimo e
-máximo · transição proibida · duas ações concorrentes no mesmo registro.
+máximo · transição proibida · duas ações concorrentes no mesmo registro · acesso
+pelo papel errado.
+
+Autorização é caso de borda, não caminho feliz: testar só quem pode não prova
+nada sobre quem não pode.
 
 ## 6. Ordem de implementação
 
