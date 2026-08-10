@@ -27,7 +27,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$protocolVersion = '1.2.0'
+$protocolVersion = '1.2.1'
 $protocolUrl = "https://raw.githubusercontent.com/pauloboare/BoareProtocolDev/$Referencia/CONDUZIR.md"
 $protocolCdnUrl = "https://cdn.jsdelivr.net/gh/pauloboare/BoareProtocolDev@$Referencia/CONDUZIR.md"
 $protocolGitHubUrl = "https://github.com/pauloboare/BoareProtocolDev/blob/$Referencia/CONDUZIR.md"

@@ -3,7 +3,7 @@
 **Construa software com IA sem perder memória, decisão e teste no caminho.**
 
 [![Licença MIT](https://img.shields.io/badge/licença-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/versão-v1.2.0-informational.svg)](#versionamento)
+[![Versão](https://img.shields.io/badge/versão-v1.2.1-informational.svg)](#versionamento)
 [![Agnóstico a ferramenta](https://img.shields.io/badge/agnóstico-IDE%20%7C%20modelo%20%7C%20linguagem-lightgrey.svg)](#para-quem-serve)
 
 Boare Protocol Dev é um protocolo para conduzir projetos de software com IA

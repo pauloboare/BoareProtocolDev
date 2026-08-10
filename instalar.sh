@@ -23,7 +23,7 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 PROJETO=0
 FERRAMENTA="auto"
 REFERENCIA="v1"
-PROTOCOL_VERSION="1.2.0"
+PROTOCOL_VERSION="1.2.1"
 STATUS=0
 
 while [ "$#" -gt 0 ]; do
